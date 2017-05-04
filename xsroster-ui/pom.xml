@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>xsroster-ui</artifactId>
+  <packaging>war</packaging>  
+  <parent>
+    <groupId>org.xsris.addons</groupId>
+    <artifactId>xsroster</artifactId>
+    <version>0.0.1</version>
+    <relativePath>..</relativePath>
+  </parent>
+  
+  <properties>
+    <frontend-maven-plugin.version>1.4</frontend-maven-plugin.version>
+    <node.version>v6.10.3</node.version>
+    <npm.version>3.10.9</npm.version>
+  </properties>
+  
+  <profiles>
+    <profile>
+      <id>ng-build</id>
+      <activation>
+        <file>
+          <missing>target/webapp</missing>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.eirslett</groupId>
+            <artifactId>frontend-maven-plugin</artifactId>
+            <version>${frontend-maven-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>install node and npm</id>
+                <goals>
+                  <goal>install-node-and-npm</goal>
+                </goals>
+                <configuration>
+                  <nodeVersion>${node.version}</nodeVersion>
+                  <npmVersion>${npm.version}</npmVersion>
+                </configuration>
+              </execution>
+              <execution>
+                <id>npm install</id>
+                <goals>
+                  <goal>npm</goal>
+                </goals>
+                <configuration>
+                  <arguments>install --registry=https://registry.npm.taobao.org</arguments>
+                </configuration>
+              </execution>
+              <execution>
+                <!--<id>npm run-script prod</id>-->
+                <id>npm run-script prod</id>
+                <phase>prepare-package</phase>
+                <goals>
+                  <goal>npm</goal>
+                </goals>
+                <configuration>
+                  <!--<arguments>run-script prod</arguments> //use this for production-->
+                  <arguments>run-script prod</arguments>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>unsecure</id>
+      <activation>
+        <property>
+          <name>!secure</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+              <classifier>unsecure</classifier>
+              <webXml>${project.basedir}/src/main/webxml/web.xml</webXml>
+              <webResources>
+                <resource>
+                  <directory>target/webapp</directory>
+                </resource>
+              </webResources>
+              <webappDirectory>${project.build.directory}/${project.build.finalName}-unsecure</webappDirectory>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>secure</id>
+      <activation>
+        <property>
+          <name>secure</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+              <classifier>secure</classifier>
+              <webXml>${project.basedir}/src/main/webxml/web-secure.xml</webXml>
+              <webResources>
+                <resource>
+                  <directory>target/webapp</directory>
+                </resource>
+              </webResources>
+              <webappDirectory>${project.build.directory}/${project.build.finalName}-secure</webappDirectory>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
