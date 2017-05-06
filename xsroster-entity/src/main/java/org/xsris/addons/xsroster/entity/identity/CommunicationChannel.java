@@ -12,11 +12,10 @@ import org.hibernate.annotations.MetaValue;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.xsris.addons.xsroster.entity.base.IdentifiableEntity;
+import org.xsris.addons.xsroster.entity.namecode.CommunicationType;
 import org.xsris.addons.xsroster.entity.organization.Company;
 import org.xsris.addons.xsroster.entity.organization.Department;
 import org.xsris.addons.xsroster.entity.organization.Facility;
-
-import com.agfa.sh.eqis.core.entities.namecode.CommunicationType;
 
 @Entity
 @Table(name = "COMMUNICATION_CHANNEL")

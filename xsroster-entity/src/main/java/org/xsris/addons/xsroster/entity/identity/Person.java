@@ -9,9 +9,8 @@ import javax.persistence.MappedSuperclass;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.joda.time.DateTime;
-
-import com.agfa.sh.eqis.core.entities.metadata.Gender;
-import com.agfa.sh.eqis.core.entities.metadata.Gender.GenderType;
+import org.xsris.addons.xsroster.entity.metadata.Gender;
+import org.xsris.addons.xsroster.entity.metadata.Gender.GenderType;
 
 @MappedSuperclass
 @TypeDef(name = "Gender", defaultForType = Gender.class, typeClass = GenderType.class)

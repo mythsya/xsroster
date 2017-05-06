@@ -18,12 +18,12 @@ public abstract class IdentifiableEntity implements Serializable {
 
 	private static final long serialVersionUID = 4624644598386899054L;
 
+	protected String id;
+
 	@Id
 	@Column(name = "id", length = 32)
 	@GeneratedValue(generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	protected String id;
-
 	public String getId() {
 		return id;
 	}

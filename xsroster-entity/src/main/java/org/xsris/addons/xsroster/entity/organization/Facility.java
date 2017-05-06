@@ -7,7 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.agfa.sh.eqis.core.entities.namecode.FacilityType;
+import org.xsris.addons.xsroster.entity.namecode.FacilityType;
 
 @Entity
 @Table(name = "FACILITY")

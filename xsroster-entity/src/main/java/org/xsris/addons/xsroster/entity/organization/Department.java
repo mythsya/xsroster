@@ -14,10 +14,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.xsris.addons.xsroster.entity.identity.CommunicationChannel;
+import org.xsris.addons.xsroster.entity.identity.Identity;
 import org.xsris.addons.xsroster.entity.identity.IdentityCode;
-
-import com.agfa.sh.eqis.core.entities.metadata.DepartmentType;
-import com.agfa.sh.eqis.core.entities.metadata.DepartmentType.DepartmentTypeType;
+import org.xsris.addons.xsroster.entity.metadata.DepartmentType;
+import org.xsris.addons.xsroster.entity.metadata.DepartmentType.DepartmentTypeType;
 
 @Entity
 @Table(name = "DEPARTMENT")

@@ -11,9 +11,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.xsris.addons.xsroster.entity.namecode.Specialism;
 import org.xsris.addons.xsroster.entity.organization.Department;
-
-import com.agfa.sh.eqis.core.entities.namecode.Specialism;
 
 @Entity
 @Table(name = "PROFESSIONAL")

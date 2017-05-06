@@ -15,7 +15,7 @@
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
     <downloadJavadocs>false</downloadJavadocs>
-    <jadira.usertype.version>6.0.1.GA</jadira.usertype.version>
+    <jadira.usertype.version>5.0.0.GA</jadira.usertype.version>
   </properties>
 
  <build>
@@ -148,6 +148,11 @@
         <artifactId>usertype.spi</artifactId>
         <version>${jadira.usertype.version}</version>
       </dependency>
+      <dependency>
+				<groupId>oracle.jdbc.driver</groupId>
+				<artifactId>ojdbc6</artifactId>
+				<version>11.2.0.2</version>
+			</dependency>      
     </dependencies>
   </dependencyManagement>
   
