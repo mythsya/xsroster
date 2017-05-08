@@ -12,7 +12,7 @@ public abstract class OptimisticLockingEntity extends IdentifiableEntity {
 	private Long version = 0L;
 
 	@Version
-	@Column(precision = 38, scale = 0, columnDefinition = "NUMBER(38,0)")
+	@Column(precision = 38, scale = 0)
 	public Long getVersion() {
 		return this.version;
 	}
