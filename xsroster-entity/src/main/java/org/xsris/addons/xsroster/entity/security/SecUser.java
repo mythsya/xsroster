@@ -62,7 +62,7 @@ public class SecUser extends OptimisticLockingEntity {
 		return this.createdWhen;
 	}
 
-	@Column(name = "FAIL_LOGIN_COUNT", precision = 38, scale = 0, columnDefinition = "NUMBER(38,0)")
+	@Column(name = "FAIL_LOGIN_COUNT", precision = 38, scale = 0)
 	public Long getFailedLoginCount() {
 		return this.failedLoginCount;
 	}
@@ -95,10 +95,10 @@ public class SecUser extends OptimisticLockingEntity {
 	}
 
 	@Any(metaColumn = @Column(name = "PERSON_TYPE"))
-	@AnyMetaDef(idType = "long", metaType = "char", metaValues = {
+	@AnyMetaDef(idType = "string", metaType = "char", metaValues = {
 			@MetaValue(targetEntity = Patient.class, value = "T"),
 			@MetaValue(targetEntity = Professional.class, value = "F") })
-	@JoinColumn(name = "PERSON_ID", columnDefinition = "NUMBER(38,0)")
+	@JoinColumn(name = "PERSON_ID")
 	public Person getPerson() {
 		return this.person;
 	}

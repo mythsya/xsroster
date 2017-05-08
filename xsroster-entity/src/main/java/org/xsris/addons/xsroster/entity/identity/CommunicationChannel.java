@@ -105,7 +105,7 @@ public class CommunicationChannel extends IdentifiableEntity {
 			@MetaValue(targetEntity = Company.class, value = "C"),
 			@MetaValue(targetEntity = Facility.class, value = "A"),
 			@MetaValue(targetEntity = Department.class, value = "D") })
-	@JoinColumn(name = "IDENTITY_ID", columnDefinition = "NUMBER(38,0)")
+	@JoinColumn(name = "IDENTITY_ID")
 	public Identity getIdentity() {
 		return this.identity;
 	}

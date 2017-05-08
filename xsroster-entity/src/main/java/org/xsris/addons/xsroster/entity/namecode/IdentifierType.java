@@ -19,7 +19,7 @@ public class IdentifierType extends CommonNameCode {
 	private IdentifierTypeUsage usage;
 
 	@Type(type = "IdentifierTypeUsage")
-	@Column(name = "USAGE", length = 100)
+	@Column(name = "IDENTIFIER_TYPE_USAGE", length = 100)
 	public IdentifierTypeUsage getUsage() {
 		return this.usage;
 	}

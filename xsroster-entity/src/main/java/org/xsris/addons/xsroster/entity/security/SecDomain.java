@@ -38,7 +38,7 @@ public class SecDomain extends OptimisticLockingEntity {
 		return this.name;
 	}
 
-	@Column(name = "SEQUENCE", precision = 38, scale = 0, columnDefinition = "NUMBER(38,0)")
+	@Column(name = "SEQUENCE", precision = 38, scale = 0)
 	public Long getSequence() {
 		return this.sequence;
 	}

@@ -1,1 +1,0 @@
-package org.xsris.addons.xsroster.web;

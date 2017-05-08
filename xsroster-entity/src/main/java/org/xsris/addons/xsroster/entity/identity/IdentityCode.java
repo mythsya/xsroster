@@ -52,7 +52,7 @@ public class IdentityCode extends IdentifiableEntity {
 	}
 
 	@Any(metaColumn = @Column(name = "IDENTITY_TYPE"))
-	@AnyMetaDef(idType = "long", metaType = "char", metaValues = {
+	@AnyMetaDef(idType = "string", metaType = "char", metaValues = {
 			@MetaValue(targetEntity = Patient.class, value = "T"),
 			@MetaValue(targetEntity = Professional.class, value = "F"),
 			@MetaValue(targetEntity = Company.class, value = "C"),

@@ -42,6 +42,10 @@
       <groupId>oracle.jdbc.driver</groupId>
       <artifactId>ojdbc6</artifactId>
     </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+    </dependency>
   </dependencies>
   
   <build>
