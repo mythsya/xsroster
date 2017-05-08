@@ -5,12 +5,10 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import org.xsris.addons.xsroster.entity.namecode.FacilityType;
 
 @Entity
-@Table(name = "FACILITY")
 @DiscriminatorValue(value = "A")
 public class Facility extends Company {
 	private static final long serialVersionUID = 3435731754719356280L;

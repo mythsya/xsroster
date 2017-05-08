@@ -1,6 +1,5 @@
 package org.xsris.addons.xsroster.entity.organization;
 
-import java.awt.Dialog.ModalityType;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.xsris.addons.xsroster.entity.base.OptimisticLockingTrackableEntity;
+import org.xsris.addons.xsroster.entity.namecode.ModalityType;
 
 @Entity
 @Table(name = "MODALITY", uniqueConstraints = { @UniqueConstraint(name = "UK_MODALITY_CODE", columnNames = { "CODE" }),

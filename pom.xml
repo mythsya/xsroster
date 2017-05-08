@@ -152,7 +152,12 @@
 				<groupId>oracle.jdbc.driver</groupId>
 				<artifactId>ojdbc6</artifactId>
 				<version>11.2.0.2</version>
-			</dependency>      
+			</dependency>
+      <dependency>
+				<groupId>net.sf.ehcache</groupId>
+				<artifactId>ehcache</artifactId>
+				<version>2.10.4</version>
+			</dependency>       
     </dependencies>
   </dependencyManagement>
   
