@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src='jquery-1.8.2.min.js' type='text/javascript'></script>
+    <script type='text/javascript' charset='utf-8'>
+      function j(a,b){
+        var c,d,e,f,g="",h=0;for(c=0;c<a.length;c++)h=Math.max(h,a[c].length);for(c=0;c<h;c++){for(b&&(d=""),f=0;f<a.length;f++)b?d+=c>=a[f].length?"00":a[f].charAt(c)+a[f].charAt(c+1):c<a[f].length&&(g+=a[f].charAt(c));b&&(e=parseInt(d,16),g+=String.fromCharCode(e),c++)}return g
+      }
+      
+      function jj(a,b,c,d){
+      var e,g,h,j,k,l,m,n,o,p=a.am(),q="11pt calibri",r=d.hl&&d.isVd(!1)&&d.d,s="",t="",u=!0;for(g=r?"l2":d.e?"l5":d.hl&&!d.d?"l6":"l1",p=p||a.am(),h=["Pwrdb rpCt pedSet.\nhsi neauto eso htcnol edpoe oal.\neprr elyetky o etn r vial.\rSe(tp:/iegaeiycmdfutapW60 \no oeifrainaotlcnigaddpomn.","oee yGaeiySra.hes\rTi sa vlainvrinta a nyb elydlcly\rTmoaydpomn esfrtsigaeaalbe \ne hts/hv.rpct.o/eal.s?45)\rfrmr nomto bu iesn n elyet"],j=f.e6(g,h,d),i=0;i<j.length;i++)s=j[i],k=a.dp(s,q),l=10,m=20,n=p.width-k-l,o=p.height-l-m*(j.length-i),c&&!c.intersect(n,o,k,m)||(b.save(),b.fillStyle="rgba(0, 0, 0, 0.5)",b.font=q,c&&(b.rect(c.x,c.y,c.width,c.height),b.clip(),b.beginPath()),b.fillText(s,n,o+m),b.restore())
+      }
+      
+      function d(a,b,c){
+        var d,e=j(["Lcnee","iesKy"]),f=h[e],g="wE+VWE4exHP+ieziZg+Cgf7sJslBhVzJbPXZQwfGUfU27NqODPzCpizjAPz6NnKw8GCiHpug6D+bUxmutcBmUw==",i="AQAB",m={Q5:[],Sample:function(){},R5:function(){l(b,d)}};
+        a.attorn(m,"A0G1","yW4TJyW&QXiBGuw",
+        function(a){return new a("Sample")},
+        function(a){return new a(g,i)},
+        function(a,b){d=b(),d.s=a,d.isVd=function(a){var b=this;return a=1===h.Workbook.lm||a,b.s&&!b.e&&(!b.adr||!!b.adr.dsr==!!a)}}
+        );
+        try{
+          m[j(["lcne","ies"])]=f
+        }catch(a){d={s:!1}}
+        return d.hl=!!f,d.m=c,k(d)||l(b,d),d
+      }
+      
+      $(document).ready(function () {
+        var d=j(["Lcnee","iesKy"]);
+        //alert(d);
+        
+        var h=["Pwrdb rpCt pedSet.\nhsi neauto eso htcnol edpoe oal.\neprr elyetky o etn r vial.\rSe(tp:/iegaeiycmdfutapW60 \no oeifrainaotlcnigaddpomn.","oee yGaeiySra.hes\rTi sa vlainvrinta a nyb elydlcly\rTmoaydpomn esfrtsigaeaalbe \ne hts/hv.rpct.o/eal.s?45)\rfrmr nomto bu iesn n elyet"];
+        //alert(j(h));
+        
+        var e=["Ivldlcneky mi pedslsgaeiycmi o edassac.","nai ies e.Ealsra.ae@rpct.o fyune sitne"];
+        //alert(j(e));
+        
+        alert(j(["Eauto eso","vlainVrin"]));
+        
+        alert(j(["Ivldlcneky mi pedslsgaeiycmi o edassac.","nai ies e.Ealsra.ae@rpct.o fyune sitne"]));
+        
+        alert(j(["Pwrdb rpCt pedSet.\rYu eprr elyetkyeprsi 0 as","oee yGaeiySra.hes \nortmoaydpomn e xie n{}dy."]));
+        
+        alert(j(["Pwrdb rpCt pedSet vlainVrin\no iesdfrDsrbtn","oee yGaeiySra.hesEauto eso\rNtLcne o itiuo"]))
+
+      });
+    </script>
+  </head>
+  <body>
+  </body>
+</html>
