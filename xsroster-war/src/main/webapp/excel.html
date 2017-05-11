@@ -3,6 +3,7 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
+  <title>排班表</title>
   <link rel="stylesheet" href="css/font-awesome.css">
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/bootstrap-theme.css">
@@ -17,56 +18,77 @@
   <link rel="stylesheet" href="css/colorpicker.css">
   <link rel="stylesheet" href="css/borderpicker.css">
   <link rel="stylesheet" href="css/insp-spread.css">
-  <link rel="stylesheet" href="css/sample.css">
+  <link rel="stylesheet" href="css/excel.css">
   
   <script type="text/javascript" src="scripts/jquery-1.11.1.js"></script>
   <script type="text/javascript" src="scripts/jquery-ui-1.10.3.js"></script>
   <script type="text/javascript" src="scripts/bootstrap-3.3.4.js"></script>
   
-  <script type="text/javascript" src="scripts/gc.spread.sheets.all.10.1.0.js"></script>
-  <script type="text/javascript" src="scripts/gc.spread.excelio.10.1.0.js"></script>
+  <script type="text/javascript" src="scripts/gc.spread.sheets.all.10.1.0.min.js"></script>
+  <script type="text/javascript" src="scripts/gc.spread.excelio.10.1.0.min.js"></script>
   
-  <script type="text/javascript" src="scripts/license.js"></script>
+
   <script type="text/javascript" src="scripts/FileSaver-1.3.2.js"></script>
   <script type="text/javascript" src="scripts/resources.js"></script>
-  <script type="text/javascript" src="scripts/sample.js"></script>
+  <script type="text/javascript" src="scripts/excel-common.js"></script>
+  <script type="text/javascript" src="scripts/excel.js"></script>
   
 </head>
 <body class="unselectable">
 <div class="toolbar" id="toolbar">
     <div class="toolbar-left-section">
         <div class="toolbar-spread">
-            <div class="sample-head-text">排班表</div>
+            <div class="sample-head-text">&nbsp;</div>
         </div>
         <div class="btn-group" role="group" aria-label="toolbar" style="margin-top: 10px;margin-left:10px;">
             <div>
                 <div class="insp-row">
                     <div>
-
+                        <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doConfig"
+                                title="@toolBar.configTitle@">
+                            <span class="fa fa-gear fa-2x"></span>
+                        </button>
+                        <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doOpen"
+                                title="@toolBar.openTitle@">
+                            <span class="fa fa-folder-open fa-2x"></span>
+                        </button>
+                        <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doSave"
+                                title="@toolBar.saveTitle@">
+                            <span class="fa fa-save fa-2x"></span>
+                        </button>
+                        <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doPublish"
+                                title="@toolBar.publishTitle@">
+                            <span class="fa fa-paper-plane fa-2x"></span>
+                        </button>
+                        <div style="width:20px;"></div>
                         <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doImport"
                                 title="@toolBar.importFile@">
-                            <span class="fa fa-folder-open fa-2x"></span>
+                            <span class="fa fa-cloud-upload fa-2x"></span>
                         </button>
                         <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doExport"
                                 title="@toolBar.export.title@">
-                            <span class="fa fa-floppy-o fa-2x"></span>
+                            <span class="fa fa-file-excel-o fa-2x"></span>
                         </button>
-                        <!--<a class="btn btn-default btn-toolbar localize-tooltip" id="download"-->
-                           <!--title="@toolBar.download@">-->
-                            <!--<span class="fa fa-cloud-download fa-2x"></span>-->
-                        <!--</a>-->
+                        <div style="width:20px;"></div>
                         <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doClear"
                                 title="@toolBar.clear.title@">
                             <span class="fa fa-eraser fa-2x"></span>
                         </button>
+                        <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doUndo"
+                                title="@toolBar.undo.title@">
+                            <span class="fa fa-undo fa-2x"></span>
+                        </button>
+                        
                         <div class="insp-dropdown-list insp-inline-row v-middle localize-tooltip"
-                             data-list-ref="zoomList" data-name="zoomSpread" title="@toolBar.zoom.title@">
+                             data-list-ref="zoomList" data-name="zoomSpread" title="@toolBar.zoom.title@" style="width:70px;">
                             <div class="dropdown insp-inline-row-item btn btn-default insp-text-right insp-col-12 btn-zoom btn-hover">
                                 <div style="width: 100%; height: 100%">
                                     <span class="display btn-zoom-text"></span><span class="caret"></span>
                                 </div>
                             </div>
                         </div>
+                        
+                        
                     </div>
                 </div>
             </div>
@@ -84,7 +106,7 @@
             </button>
             <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="addcomment"
                     title="@toolBar.insertComment@">
-                <span class="fa fa-comment fa-2x"></span>
+                <span class="fa fa-comments fa-2x"></span>
             </button>
             <div class="btn-group" role="group">
                 <button type="button" class="btn btn-default btn-toolbar dropdown-toggle localize-tooltip"
@@ -183,7 +205,7 @@
     <div class="toolbar-right-section">
         <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="toggleInspector"
                 title="@toolBar.hideInspector@">
-            <span class="fa fa-angle-right fa-2x"></span>
+            <span class="fa fa-angle-right fa-2x"><div style="display: inline-block; width:100%; text-align:center;">2017年5月排班</div></span>
         </button>
     </div>
 </div>
@@ -7727,18 +7749,6 @@
     </div>
 </div>
 
-<div class="insp-menu" role="menu" id="exportActionList">
-    <div class="menu-item">
-        <div class="image"></div>
-        <div class="text localize" data-value="exportJson">@toolBar.export.exportActions.exportJson@</div>
-        <div class="shortcut"></div>
-    </div>
-    <div class="menu-item">
-        <div class="image"></div>
-        <div class="text localize" data-value="exportExcel">@toolBar.export.exportActions.exportExcel@</div>
-        <div class="shortcut"></div>
-    </div>
-</div>
 
 <div class="insp-menu" role="menu" id="fontFamilyList">
     <div class="menu-item">
@@ -9080,42 +9090,42 @@
 <div class="insp-menu" role="menu" id="spreadThemeList">
     <div class="menu-item">
         <div class="image fa fa-check"></div>
-        <div class="text localize" data-value="css/gc.spread.sheets.10.0.1.css">
+        <div class="text localize" data-value="css/gc.spread.sheets.10.1.0.css">
             @spreadTab.spreadTheme.theme.option.spreadJS@
         </div>
         <div class="shortcut"></div>
     </div>
     <div class="menu-item">
         <div class="image fa fa-check"></div>
-        <div class="text localize" data-value="css/gc.spread.sheets.excel2013white.10.0.1.css">
+        <div class="text localize" data-value="css/gc.spread.sheets.excel2013white.10.1.0.css">
             @spreadTab.spreadTheme.theme.option.excel2013White@
         </div>
         <div class="shortcut"></div>
     </div>
     <div class="menu-item">
         <div class="image fa fa-check"></div>
-        <div class="text localize" data-value="css/gc.spread.sheets.excel2013lightGray.10.0.1.css">
+        <div class="text localize" data-value="css/gc.spread.sheets.excel2013lightGray.10.1.0.css">
             @spreadTab.spreadTheme.theme.option.excel2013LightGray@
         </div>
         <div class="shortcut"></div>
     </div>
     <div class="menu-item">
         <div class="image fa fa-check"></div>
-        <div class="text localize" data-value="css/gc.spread.sheets.excel2013darkGray.10.0.1.css">
+        <div class="text localize" data-value="css/gc.spread.sheets.excel2013darkGray.10.1.0.css">
             @spreadTab.spreadTheme.theme.option.excel2013DarkGray@
         </div>
         <div class="shortcut"></div>
     </div>
     <div class="menu-item">
         <div class="image fa fa-check"></div>
-        <div class="text localize" data-value="css/gc.spread.sheets.excel2016colorful.10.0.1.css">
+        <div class="text localize" data-value="css/gc.spread.sheets.excel2016colorful.10.1.0.css">
             @spreadTab.spreadTheme.theme.option.excel2016Colorful@
         </div>
         <div class="shortcut"></div>
     </div>
     <div class="menu-item">
         <div class="image fa fa-check"></div>
-        <div class="text localize" data-value="css/gc.spread.sheets.excel2016darkGray.10.0.1.css">
+        <div class="text localize" data-value="css/gc.spread.sheets.excel2016darkGray.10.1.0.css">
             @spreadTab.spreadTheme.theme.option.excel2016DarkGray@
         </div>
         <div class="shortcut"></div>

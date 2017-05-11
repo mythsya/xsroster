@@ -38,7 +38,14 @@
         insertPicture: "Insert Picture",
         insertComment: "Insert Comment",
         insertSparkline: "Insert Sparkline",
-        insertSlicer: "Insert Slicer"
+        insertSlicer: "Insert Slicer",
+        configTitle: "Config",
+        openTitle: "Open Others",
+        saveTitle: "Save",
+        publishTitle: "Publish",
+        undo : {
+            title: "Undo"
+        }
     },
     tabs: {
         spread: "Spread",
