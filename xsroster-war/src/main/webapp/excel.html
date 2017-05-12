@@ -9177,9 +9177,10 @@
 </div>
 
 <ul id="spreadContextMenu" class="dropdown-menu" role="menu" style="display: none">
-    <li><a class="localize" data-action="cut">@contextMenu.cutItem@</a></li>
-    <li><a class="localize" data-action="copy">@contextMenu.copyItem@</a></li>
-    <li><a class="localize" data-action="paste">@contextMenu.pasteItem@</a></li>
+    <li class="context-normal"><a class="localize" data-action="cut">@contextMenu.cutItem@</a></li>
+    <li class="context-normal"><a class="localize" data-action="copy">@contextMenu.copyItem@</a></li>
+    <li class="context-normal"><a class="localize" data-action="paste">@contextMenu.pasteItem@</a></li>
+    <li class="context-tabstrip"><a class="localize" data-action="remove">@contextMenu.removeItem@</a></li>
     <li class="context-header divider"></li>
     <li class="context-header"><a class="localize" data-action="insert">@contextMenu.insertItem@</a></li>
     <li class="context-header"><a class="localize" data-action="delete">@contextMenu.deleteItem@</a></li>
@@ -9663,6 +9664,18 @@
             <div>
                 <div class="insp-text insp-inline-row">
                     <a id="download" class="title insp-inline-row-item insp-col-6 localize" data-contextmenu="true">@toolBar.download@</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmRemoveSheetDiaglog" title="ConfirmRemoveSheet" class="hidden">
+    <div>
+        <div class="insp-row">
+            <div>
+                <div class="insp-text insp-inline-row">
+                    <a id="confirmRemoveSheet" class="title insp-inline-row-item insp-col-6 localize" data-contextmenu="true">@removeSheetDialog.confirmTitle@</a>
                 </div>
             </div>
         </div>

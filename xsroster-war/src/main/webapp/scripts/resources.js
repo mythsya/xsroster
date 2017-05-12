@@ -1324,10 +1324,14 @@
         cutItem: "Cut",
         copyItem: "Copy",
         pasteItem: "Paste",
+        removeItem: "Remove",
         insertItem: "Insert",
         deleteItem: "Delete",
         mergeItem: "Merge",
         unmergeItem: "Unmerge"
+    },
+    removeSheetDialog: {
+        confirmTitle: "Do you confirm to remove this sheet?"
     },
     dialog: {
         ok: "OK",

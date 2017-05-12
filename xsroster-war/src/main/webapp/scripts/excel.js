@@ -6230,8 +6230,7 @@ function showMergeContextMenu() {
     }
 }
 
-function processSpreadContextMenu(e) {
-    console.info(e);
+function processSpreadContextMenu(e) {    
     // move the context menu to the position of the mouse point
     var sheet = spread.getActiveSheet(),
         target = getHitTest(e.pageX, e.pageY, sheet),
@@ -6241,12 +6240,16 @@ function processSpreadContextMenu(e) {
         selections = sheet.getSelections();
 
     var isHideContextMenu = false;
+    
+    var hitTabStrip = e.target && e.target.id.indexOf("_tabStrip")>=0;
 
     if (hitTestType === spreadNS.SheetArea.colHeader) {
         if (getCellInSelections(selections, row, col) === null) {
             sheet.setSelection(-1, col, sheet.getRowCount(), 1);
         }
         if (row !== undefined && col !== undefined) {
+            $(".context-normal").show();
+            $(".context-tabstrip").hide();
             $(".context-header").show();
             $(".context-cell").hide();
         }
@@ -6255,6 +6258,8 @@ function processSpreadContextMenu(e) {
             sheet.setSelection(row, -1, 1, sheet.getColumnCount());
         }
         if (row !== undefined && col !== undefined) {
+            $(".context-normal").show();
+            $(".context-tabstrip").hide();
             $(".context-header").show();
             $(".context-cell").hide();
         }
@@ -6266,15 +6271,24 @@ function processSpreadContextMenu(e) {
             updateMergeButtonsState();
         }
         if (row !== undefined && col !== undefined) {
+            $(".context-normal").show();
             $(".context-header").hide();
             $(".context-cell").hide();
+            $(".context-tabstrip").hide();
             showMergeContextMenu();
-        } else {
+        } else if(hitTabStrip) {            
+            $(".context-normal").hide();
+            $(".context-header").hide();
+            $(".context-cell").hide();
+            $(".context-tabstrip").show();
+        } else  {
             isHideContextMenu = true;
         }
     } else if (hitTestType === spreadNS.SheetArea.corner) {
         sheet.setSelection(-1, -1, sheet.getRowCount(), sheet.getColumnCount());
         if (row !== undefined && col !== undefined) {
+            $(".context-normal").show();
+            $(".context-tabstrip").hide();
             $(".context-header").hide();
             $(".context-cell").show();
         }
@@ -6282,10 +6296,17 @@ function processSpreadContextMenu(e) {
 
     var $contextMenu = $("#spreadContextMenu");
     $contextMenu.data("sheetArea", hitTestType);
+    $contextMenu.data("hitTabStrip", hitTabStrip);
     if (isHideContextMenu) {
         hideSpreadContextMenu();
     } else {
-        $contextMenu.css({left: e.pageX, top: e.pageY});
+        
+        var nx = e.pageX + $contextMenu.width(), ny = e.pageY + $contextMenu.height();
+        var maxX = $(document).width(), maxY = $(document).height();
+        nx = (nx+40) >= maxX? (e.pageX - $contextMenu.width()) : e.pageX;
+        ny = (ny+40) >= maxY? (e.pageY - $contextMenu.height()) : e.pageY;        
+        
+        $contextMenu.css({left: nx, top: ny});
         $contextMenu.show();
 
         $(document).on("mousedown.contextmenu", function (event) {
@@ -6304,8 +6325,10 @@ function hideSpreadContextMenu() {
 function processContextMenuClicked() {
     var action = $(this).data("action");
     var sheet = spread.getActiveSheet();
-    var sheetArea = $("#spreadContextMenu").data("sheetArea");
-
+    var $spreadContextMenu = $("#spreadContextMenu");
+    var sheetArea = $spreadContextMenu.data("sheetArea");
+    var hitTabStrip = $spreadContextMenu.data("hitTabStrip");
+    
     hideSpreadContextMenu();
 
     switch (action) {
@@ -6317,6 +6340,18 @@ function processContextMenuClicked() {
             break;
         case "paste":
             spread.commandManager().execute({cmd: "paste", sheetName: sheet.name()});
+            break;
+        case "remove":
+            if (hitTabStrip) {
+                var sheetCount = spread.getSheetCount();
+                var activeIndex = spread.getActiveSheetIndex();
+                if (activeIndex >= 0) {
+                    var CONFIRM_DIALOG_WIDTH = 500;
+                    showModal(uiResource.removeSheetDialog.confirmTitle, CONFIRM_DIALOG_WIDTH, $("#confirmRemoveSheetDiaglog").children(), function() {
+                      spread.removeSheet(activeIndex);
+                    });
+                }
+            }
             break;
         case "insert":
             if (sheetArea === spreadNS.SheetArea.colHeader) {
