@@ -6347,7 +6347,7 @@ function processContextMenuClicked() {
                 var activeIndex = spread.getActiveSheetIndex();
                 if (activeIndex >= 0) {
                     var CONFIRM_DIALOG_WIDTH = 500;
-                    showModal(uiResource.removeSheetDialog.confirmTitle, CONFIRM_DIALOG_WIDTH, $("#confirmRemoveSheetDiaglog").children(), function() {
+                    showModal(uiResource.dialog.confirm, CONFIRM_DIALOG_WIDTH, $("#confirmRemoveSheetDiaglog").children(), function() {
                       spread.removeSheet(activeIndex);
                     });
                 }

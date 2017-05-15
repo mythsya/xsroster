@@ -1335,7 +1335,9 @@
     },
     dialog: {
         ok: "OK",
-        cancel: "Cancel"
+        cancel: "Cancel",
+        confirm: "Confirmation",
+        alert: "Alert"
     }
 };
 
