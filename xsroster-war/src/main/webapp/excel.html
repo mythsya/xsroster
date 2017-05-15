@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="css/borderpicker.css">
   <link rel="stylesheet" href="css/insp-spread.css">
   <link rel="stylesheet" href="css/excel.css">
+  <link rel="stylesheet" href="css/ztree-metro-style.css">
   
   <script type="text/javascript" src="scripts/jquery-1.11.1.js"></script>
   <script type="text/javascript" src="scripts/jquery-ui-1.10.3.js"></script>
@@ -26,7 +27,7 @@
   
   <script type="text/javascript" src="scripts/gc.spread.sheets.all.10.1.0.min.js"></script>
   <script type="text/javascript" src="scripts/gc.spread.excelio.10.1.0.min.js"></script>
-  
+  <script type="text/javascript" src="scripts/jquery.ztree.all.3.5.28.min.js"></script>
 
   <script type="text/javascript" src="scripts/FileSaver-1.3.2.js"></script>
   <script type="text/javascript" src="scripts/resources.js"></script>
@@ -73,10 +74,6 @@
                         <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doClear"
                                 title="@toolBar.clear.title@">
                             <span class="fa fa-eraser fa-2x"></span>
-                        </button>
-                        <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doUndo"
-                                title="@toolBar.undo.title@">
-                            <span class="fa fa-undo fa-2x"></span>
                         </button>
                         
                         <div class="insp-dropdown-list insp-inline-row v-middle localize-tooltip"
@@ -233,6 +230,9 @@
     <div class="insp-container">
         <div>
             <ul class="nav nav-tabs nav-justified">
+                <li class="insp-cate-tab">
+                    <a href="#rosterHistroyTreeTab" data-toggle="tab" class="localize">@tabs.rosterHistroy@</a>
+                </li>
                 <li class="insp-cate-tab active">
                     <a href="#spreadTab" data-toggle="tab" class="localize">@tabs.spread@</a>
                 </li>
@@ -262,6 +262,15 @@
                 </li>
             </ul>
             <div class="tab-content">
+                <div class="tab-pane" id="rosterHistroyTreeTab">
+                    <div class="insp-pane">
+                        <div class="insp-group-layout">
+                            <div class="insp-group expanded">
+                                <ul id="treeDemo" class="ztree" style="margin-top:0; height:auto;"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="tab-pane active" id="spreadTab">
                     <div class="insp-pane">
                         <div class="insp-group-layout">
@@ -9692,11 +9701,12 @@
             <div class="modal-body">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default localize" id="dialogConfirm">@dialog.ok@</button>
-                <button type="button" class="btn btn-default localize" data-dismiss="modal">@dialog.cancel@</button>
+                <button type="button" class="btn btn-success btn-lg localize" id="dialogConfirm">&nbsp; @dialog.ok@ &nbsp;</button>
+                <button type="button" class="btn btn-default btn-lg localize" data-dismiss="modal">@dialog.cancel@</button>
             </div>
         </div>
     </div>
 </div>
+
 </body>
 </html>

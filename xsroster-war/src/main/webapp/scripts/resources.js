@@ -48,6 +48,7 @@
         }
     },
     tabs: {
+        rosterHistroy: "Histroy",
         spread: "Spread",
         sheet: "Sheet",
         cell: "Cell",
@@ -1318,7 +1319,8 @@
         rowColumnRangeRequired: "Please select a range of row or column.",
         imageFileRequired: "The file must be image!",
         duplicatedSlicerName: "Duplicated slicer name.",
-        invalidSlicerName: "Slicer name is not valid."
+        invalidSlicerName: "Slicer name is not valid.",
+        xlsxFileRequired: "The file must be .xlsx excel file!"
     },
     contextMenu: {
         cutItem: "Cut",
@@ -1334,10 +1336,13 @@
         confirmTitle: "Do you confirm to remove this sheet?"
     },
     dialog: {
-        ok: "OK",
+        ok: " OK ",
         cancel: "Cancel",
         confirm: "Confirmation",
         alert: "Alert"
+    },
+    rosterHistroy: {
+        dialogTitle: "Roster Histroy"
     }
 };
 
