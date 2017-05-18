@@ -43,6 +43,7 @@
         openTitle: "Open Others",
         saveTitle: "Save",
         publishTitle: "Publish",
+        printTitle: "Print",
         undo : {
             title: "Undo"
         }
@@ -58,6 +59,12 @@
         picture: "Picture",
         sparklineEx: "Sparkline",
         slicer: "Slicer"
+    },
+    histroyTab: {
+        general: {
+            openButtonTitle: "Open",
+            delButtonTitle: "Delete"
+        }
     },
     spreadTab: {
         general: {

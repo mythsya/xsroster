@@ -2662,7 +2662,6 @@ function processFileSelected() {
 
     
     if (action === "doImport") {
-        console.info(file.type);
         if (!/application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet/.test(file.type)) {
             alert(getResource("messages.xlsxFileRequired"));
             return false;
@@ -3116,6 +3115,10 @@ function attachToolbarItemEvents() {
         });
        
     });
+    
+    $("#doPrint").click(function() {
+    	spread.print();
+    });
 
     $("#addpicture, #doImport").click(function () {
         $("#fileSelector").data("action", this.id);
@@ -3180,7 +3183,7 @@ function initZtreeNodes() {
         hideMenu();
     }
 
-    var setting2 = {
+    var setting = {
         check: {
             enable: true,
             chkStyle: "radio",
@@ -3197,6 +3200,11 @@ function initZtreeNodes() {
         callback: {
             onClick: onClickNode,
             onCheck: onCheck
+        },
+        edit: {
+            enable: true,
+            showRenameBtn: true,
+            showRemoveBtn: false
         }
     };
 
@@ -3233,7 +3241,7 @@ function initZtreeNodes() {
     ];
 
     
-    $.fn.zTree.init($("#treeDemo"), setting2, zNodes);
+    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
 }
 
 // Protect Sheet related items

@@ -23,7 +23,7 @@ public class AssigningAuthority extends TrackableEntity {
 	private String description;
 	private Facility facility;
 
-	@Column(nullable = false, length = 200)
+	@Column(name = "CODE", nullable = false, length = 200)
 	public String getCode() {
 		return this.code;
 	}

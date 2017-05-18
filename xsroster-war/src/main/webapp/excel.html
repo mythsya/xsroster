@@ -27,6 +27,7 @@
   
   <script type="text/javascript" src="scripts/gc.spread.sheets.all.10.1.0.min.js"></script>
   <script type="text/javascript" src="scripts/gc.spread.excelio.10.1.0.min.js"></script>
+  <script type="text/javascript" src="scripts/gc.spread.sheets.print.10.1.0.min.js"></script>
   <script type="text/javascript" src="scripts/jquery.ztree.all.3.5.28.min.js"></script>
 
   <script type="text/javascript" src="scripts/FileSaver-1.3.2.js"></script>
@@ -49,17 +50,22 @@
                                 title="@toolBar.configTitle@">
                             <span class="fa fa-gear fa-2x"></span>
                         </button>
-                        <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doOpen"
-                                title="@toolBar.openTitle@">
-                            <span class="fa fa-folder-open fa-2x"></span>
-                        </button>
+                        
                         <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doSave"
                                 title="@toolBar.saveTitle@">
                             <span class="fa fa-save fa-2x"></span>
                         </button>
+                        <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doOpen"
+                                title="@toolBar.openTitle@">
+                            <span class="fa fa-tags fa-2x"></span>
+                        </button>
                         <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doPublish"
-                                title="@toolBar.publishTitle@">
+                                title="@toolBar.printTitle@">
                             <span class="fa fa-paper-plane fa-2x"></span>
+                        </button>
+                        <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doPrint"
+                                title="@toolBar.publishTitle@">
+                            <span class="fa fa-print fa-2x"></span>
                         </button>
                         <div style="width:20px;"></div>
                         <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doImport"
@@ -267,6 +273,34 @@
                         <div class="insp-group-layout">
                             <div class="insp-group expanded">
                                 <ul id="treeDemo" class="ztree" style="margin-top:0; height:auto;"></ul>
+                            </div>
+                            <div class="insp-group expanded">
+                                <div class="insp-group-content" style="height:20px;">
+                                </div>
+                            </div>
+                            <div class="insp-group expanded">
+                                <div class="insp-group-content">
+                                    <div>
+                                        <div class="insp-row">
+                                            <div>
+                                                <div class="insp-buttons insp-inline-row">
+                                                    <div class="insp-inline-row-item content">
+                                                        <div class="item">
+                                                            <div class="button btn btn-lg btn-success localize" id="sortAZ">
+                                                                @histroyTab.general.openButtonTitle@
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                            <div class="button btn btn-lg btn-danger localize" id="sortZA">
+                                                                @histroyTab.general.delButtonTitle@
+                                                            </div>
+                                                        </div>                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

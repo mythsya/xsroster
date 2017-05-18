@@ -12,6 +12,10 @@
     <relativePath>..</relativePath>
   </parent>
   
+  <properties>
+    <localrepodir>${project.basedir}/../localrepo</localrepodir>
+  </properties>
+  
   <dependencies>
     <dependency>
       <groupId>org.xsris.addons</groupId>
@@ -45,6 +49,18 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.aspose</groupId>
+      <artifactId>aspose-cells</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.aspose</groupId>
+      <artifactId>aspose-words</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.media</groupId>
+      <artifactId>jai_imageio</artifactId>
     </dependency>
   </dependencies>
   

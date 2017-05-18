@@ -465,6 +465,7 @@ insp-radio-button-group .group-container .collapse {
   border: 0;
   border-bottom: 1px solid #ddd;
   background-color: #ccc;
+  padding: 5px 10px !important;
 }
 .clab-container .tab-container {
   height: 100%;
