@@ -1,22 +1,4 @@
 
-var spreadNS = GC.Spread.Sheets;
-var DataValidation = spreadNS.DataValidation;
-var ConditionalFormatting = spreadNS.ConditionalFormatting;
-var ComparisonOperators = ConditionalFormatting.ComparisonOperators;
-var Calc = GC.Spread.CalcEngine;
-var ExpressionType = Calc.ExpressionType;
-var SheetsCalc = spreadNS.CalcEngine;
-var Sparklines = spreadNS.Sparklines;
-var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-var isIE = navigator.userAgent.toLowerCase().indexOf('compatible') < 0 && /(trident)(?:.*? rv ([\w.]+)|)/.exec(navigator.userAgent.toLowerCase()) !== null;
-var DOWNLOAD_DIALOG_WIDTH = 300;
-
-var spread, excelIO;
-var tableIndex = 1, pictureIndex = 1;
-var fbx, isShiftKey = false;
-var resourceMap = {},
-    conditionalFormatTexts = {};
-
 function toggleState() {
     var $element = $(this),
         $parent = $element.parent(),
@@ -1931,6 +1913,11 @@ function divButtonClicked() {
             toggleGroupDetail(sheet, false);
             break;
 
+        case "doOpenSelectedRoster":
+        case "doDelSelectedRoster":
+        case "doCreateNewRoster":
+        case "doCopyCreateNewRoster":
+        	break;
         default:
             console.log("TODO add code for ", id);
             break;
@@ -2660,10 +2647,11 @@ function processFileSelected() {
     // clear to make sure change event occures even when same file selected again
     $("#fileSelector").val("");
 
-    
     if (action === "doImport") {
-        if (!/application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet/.test(file.type)) {
-            alert(getResource("messages.xlsxFileRequired"));
+        if (!/application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet/.test(file.type)) {            
+            showAlertDialog({
+            	message: getResource("toolBar.import.xlsxFileRequired")
+            });
             return false;
         }
         return importFile(file);
@@ -2972,79 +2960,11 @@ function syncPicturePropertyValues(sheet, picture) {
     $("#positionbox").val(picture.name());
 }
 
-var _floatInspector = false;
-
-function adjustInspectorDisplay() {
-    var $inspectorContainer = $(".insp-container"),
-        $contentContainer = $("#inner-content-container"),
-        toggleInspectorClasses;
-
-    if (_floatInspector) {
-        $inspectorContainer.draggable("enable");
-        $inspectorContainer.addClass("float-inspector");
-        $contentContainer.addClass("float-inspector");
-        toggleInspectorClasses = ["fa-angle-down", "fa-angle-up"];
-        $("#inner-content-container").css({right: 0});
-    } else {
-        $inspectorContainer.draggable("disable");
-        $inspectorContainer.removeClass("float-inspector");
-        $inspectorContainer.css({left: "auto", top: 0});
-        $contentContainer.removeClass("float-inspector");
-        toggleInspectorClasses = ["fa-angle-left", "fa-angle-right"];
-    }
-
-    // update toggleInspector
-    var classIndex = ($(".insp-container:visible").length > 0) ? 1 : 0;
-    $("#toggleInspector > span")
-        .removeClass("fa-angle-left fa-angle-right fa-angle-up fa-angle-down")
-        .addClass(toggleInspectorClasses[classIndex]);
-}
-function processMediaQueryResponse(mql) {
-    if (mql.matches) {
-        if (!_floatInspector) {
-            _floatInspector = true;
-            adjustInspectorDisplay();
-        }
-    } else {
-        if (_floatInspector) {
-            _floatInspector = false;
-            adjustInspectorDisplay();
-        }
-    }
-}
-
 function checkMediaSize() {
     var mql = window.matchMedia("screen and (max-width: 768px)");
     processMediaQueryResponse(mql);
     adjustInspectorDisplay();
     mql.addListener(processMediaQueryResponse);
-}
-
-function toggleInspector() {
-    if ($(".insp-container:visible").length > 0) {
-        $(".insp-container").hide();
-        if (!_floatInspector) {
-            $("#inner-content-container").css({right: 0});
-            $("span", this).removeClass("fa-angle-right fa-angle-up fa-angle-down").addClass("fa-angle-left");
-        } else {
-            $("#inner-content-container").css({right: 0});
-            $("span", this).removeClass("fa-angle-right fa-angle-left fa-angle-up").addClass("fa-angle-down");
-        }
-
-        $(this).attr("title", uiResource.toolBar.showInspector);
-    } else {
-        $(".insp-container").show();
-        if (!_floatInspector) {
-            $("#inner-content-container").css({right: "301px"});
-            $("span", this).removeClass("fa-angle-left fa-angle-up fa-angle-down").addClass("fa-angle-right");
-        } else {
-            $("#inner-content-container").css({right: 0});
-            $("span", this).removeClass("fa-angle-right fa-angle-left fa-angle-down").addClass("fa-angle-up");
-        }
-
-        $(this).attr("title", uiResource.toolBar.hideInspector);
-    }
-    spread.refresh();
 }
 
 function attachToolbarItemEvents() {
@@ -3103,29 +3023,7 @@ function attachToolbarItemEvents() {
 
         comment.commentState(spreadNS.Comments.CommentState.edit);
     });
-    
-    initZtreeNodes();
-    
-    $("#doOpen").click(function() {
-        //var $treeMenuContent = $("#treeMenuContent");
-        //$treeMenuContent.css({ left: "15px", top: "34px" }).slideDown("fast");
-        //$treeMenuContent.show();
-        showModal(uiResource.rosterHistroy.dialogTitle, 600, $("#treeMenuContent").children(), function() {
-            
-        });
-       
-    });
-    
-    $("#doPrint").click(function() {
-    	spread.print();
-    });
-
-    $("#addpicture, #doImport").click(function () {
-        $("#fileSelector").data("action", this.id);
-        $("#fileSelector").click();
-    });
-
-    $("#toggleInspector").click(toggleInspector);
+   
 
     $("#doClear").click(function () {
         var $dropdown = $("#clearActionList"),
@@ -3145,104 +3043,7 @@ function attachToolbarItemEvents() {
     $("#addslicer").click(processAddSlicer);
 }
 
-function initZtreeNodes() {
-    //隐藏菜单
-    function hideMenu() {
-        $("#treeMenuContent").fadeOut("fast");
-        //$("body").unbind("mousedown", onBodyDown);
-    }
-    
-    //节点点击事件
-    function onClickNode(e, treeId, treeNode) {
-        var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        zTree.checkNode(treeNode, !treeNode.checked, null, true);
-        return false;
-    }
 
-    //节点选择事件
-    function onCheck(e, treeId, treeNode) {
-        var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
-        nodes = zTree.getCheckedNodes(true),
-        v = "";
-        var parentid = "";
-        var parentlevel = "";
-        for (var i = 0, l = nodes.length; i < l; i++) {
-            v += nodes[i].name + ",";
-            parentid += nodes[i].id + ",";
-            parentlevel += nodes[i].menu_level + ",";
-        }
-        if (v.length > 0) {
-            v = v.substring(0, v.length - 1);
-            parentid = parentid.substring(0, parentid.length - 1);
-            parentlevel = parentlevel.substring(0, parentlevel.length - 1);
-        }
-        else {
-            return;
-        }
-
-        hideMenu();
-    }
-
-    var setting = {
-        check: {
-            enable: true,
-            chkStyle: "radio",
-            radioType: "all"
-        },
-        view: {
-            dblClickExpand: false
-        },
-        data: {
-            simpleData: {
-                enable: true
-            }
-        },
-        callback: {
-            onClick: onClickNode,
-            onCheck: onCheck
-        },
-        edit: {
-            enable: true,
-            showRenameBtn: true,
-            showRemoveBtn: false
-        }
-    };
-
-    var zNodes = [
-        { id: 1, pId: 0, name: "父节点1", open: true },
-        { id: 11, pId: 1, name: "父节点11" },
-        { id: 111, pId: 11, name: "叶子节点111" },
-        { id: 112, pId: 11, name: "叶子节点112" },
-        { id: 113, pId: 11, name: "叶子节点113" },
-        { id: 114, pId: 11, name: "叶子节点114" },
-        { id: 12, pId: 1, name: "父节点12" },
-        { id: 121, pId: 12, name: "叶子节点121" },
-        { id: 122, pId: 12, name: "叶子节点122" },
-        { id: 123, pId: 12, name: "叶子节点123" },
-        { id: 124, pId: 12, name: "叶子节点124" },
-        { id: 13, pId: 1, name: "父节点13", isParent: true },
-        { id: 2, pId: 0, name: "父节点2" },
-        { id: 21, pId: 2, name: "父节点21", open: true },
-        { id: 211, pId: 21, name: "叶子节点211" },
-        { id: 212, pId: 21, name: "叶子节点212" },
-        { id: 213, pId: 21, name: "叶子节点213" },
-        { id: 214, pId: 21, name: "叶子节点214" },
-        { id: 22, pId: 2, name: "父节点22" },
-        { id: 221, pId: 22, name: "叶子节点221" },
-        { id: 222, pId: 22, name: "叶子节点222" },
-        { id: 223, pId: 22, name: "叶子节点223" },
-        { id: 224, pId: 22, name: "叶子节点224" },
-        { id: 23, pId: 2, name: "父节点23" },
-        { id: 231, pId: 23, name: "叶子节点231" },
-        { id: 232, pId: 23, name: "叶子节点232" },
-        { id: 233, pId: 23, name: "叶子节点233" },
-        { id: 234, pId: 23, name: "叶子节点234" },
-        { id: 3, pId: 0, name: "父节点3", isParent: true }
-    ];
-
-    
-    $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-}
 
 // Protect Sheet related items
 function getCurrentSheetProtectionOption(sheet) {
@@ -4447,8 +4248,13 @@ function processAddSparklineEx() {
     setTextValue("txtLineDataRange", parseRangeToExpString(selection));
     setTextValue("txtLineLocationRange", "");
 
-    var SPARKLINE_DIALOG_WIDTH = 360;               // sprakline dialog width
-    showModal(uiResource.sparklineDialog.title, SPARKLINE_DIALOG_WIDTH, $("#sparklineexdialog").children(), addSparklineEvent);
+    var SPARKLINE_DIALOG_WIDTH = 360;               // sprakline dialog width    
+    showModal({
+    	title: uiResource.sparklineDialog.title,
+    	width: SPARKLINE_DIALOG_WIDTH,
+    	content: $("#sparklineexdialog").children(),
+    	callback: addSparklineEvent
+    });   
 }
 
 function unParseFormula(expr, row, col) {
@@ -6147,70 +5953,7 @@ function processZoomSetting(value, title) {
 }
 // Zoom related items (end)
 
-function getResource(key) {
-    key = key.replace(/\./g, "_");
-
-    return resourceMap[key];
-}
-
-function getResourceMap(src) {
-    function isObject(item) {
-        return typeof item === "object";
-    }
-
-    function addResourceMap(map, obj, keys) {
-        if (isObject(obj)) {
-            for (var p in obj) {
-                var cur = obj[p];
-
-                addResourceMap(map, cur, keys.concat(p));
-            }
-        } else {
-            var key = keys.join("_");
-            map[key] = obj;
-        }
-    }
-
-    addResourceMap(resourceMap, src, []);
-}
-
 $(document).ready(function () {
-    function localizeUI() {
-        function getLocalizeString(text) {
-            var matchs = text.match(/(?:(@[\w\d\.]*@))/g);
-
-            if (matchs) {
-                matchs.forEach(function (item) {
-                    var s = getResource(item.replace(/[@]/g, ""));
-                    text = text.replace(item, s);
-                });
-            }
-
-            return text;
-        }
-
-        $(".localize").each(function () {
-            var text = $(this).text();
-
-            $(this).text(getLocalizeString(text));
-        });
-
-        $(".localize-tooltip").each(function () {
-            var text = $(this).prop("title");
-
-            $(this).prop("title", getLocalizeString(text));
-        });
-
-        $(".localize-value").each(function () {
-            var text = $(this).attr("value");
-
-            $(this).attr("value", getLocalizeString(text));
-        });
-    }
-
-    getResourceMap(uiResource);
-
-    localizeUI();
 
     spread = new spreadNS.Workbook($("#ss")[0], {tabStripRatio: 0.88, tabEditable: true});
     excelIO = new GC.Spread.Excel.IO();
@@ -6466,10 +6209,14 @@ function processContextMenuClicked() {
                 var sheetCount = spread.getSheetCount();
                 var activeIndex = spread.getActiveSheetIndex();
                 if (activeIndex >= 0) {
-                    var CONFIRM_DIALOG_WIDTH = 500;
-                    showModal(uiResource.dialog.confirm, CONFIRM_DIALOG_WIDTH, $("#confirmRemoveSheetDiaglog").children(), function() {
-                      spread.removeSheet(activeIndex);
-                    });
+                    var CONFIRM_DIALOG_WIDTH = 500;                    
+                    showConfirmDialog({
+                    	title: uiResource.dialog.confirm, 
+                    	width: CONFIRM_DIALOG_WIDTH,                    	
+                    	onOk: function() {
+                            spread.removeSheet(activeIndex);
+                        }
+                    });   
                 }
             }
             break;
@@ -6527,142 +6274,7 @@ function processContextMenuClicked() {
 // context menu related items (end)
 
 // import / export related items
-function processExportAction($dropdown, action) {
-    switch (action) {
-        case "exportJson":
-            exportToJSON();
-            break;
-        case "exportExcel":
-            exportToExcel();
-            break;
-        default:
-            break;
-    }
-    hideExportActionDropDown();
-}
 
-function importFile(file) {
-    var fileName = file.name;
-    var index = fileName.lastIndexOf('.');
-    var fileExt = fileName.substr(index + 1).toLowerCase();
-    if (fileExt === 'json' || fileExt === 'ssjson') {
-        importSpreadFromJSON(file);
-    } else if (fileExt === 'xlsx') {
-        importSpreadFromExcel(file);
-    }
-}
-function importSpreadFromExcel(file, options) {
-    function processPasswordDialog() {
-        importSpreadFromExcel(file, {password: getTextValue("txtPassword")});
-        setTextValue("txtPassword", "");
-    }
-
-    var PASSWORD_DIALOG_WIDTH = 300;
-    excelIO.open(file, function (json) {
-        importJson(json);
-    }, function (e) {
-        if (e.errorCode === 0) {
-            alert(getResource("messages.invalidImportFile"));
-        } else if (e.errorCode === 1) {
-            $("#passwordError").hide();
-            showModal(uiResource.passwordDialog.title, PASSWORD_DIALOG_WIDTH, $("#passwordDialog").children(), processPasswordDialog);
-        } else if (e.errorCode === 2) {
-            $("#passwordError").show();
-            showModal(uiResource.passwordDialog.title, PASSWORD_DIALOG_WIDTH, $("#passwordDialog").children(), processPasswordDialog);
-        }
-    }, options);
-}
-function importSpreadFromJSON(file) {
-    function importSuccessCallback(responseText) {
-        var spreadJson = JSON.parse(responseText);
-        importJson(spreadJson);
-    }
-
-    var reader = new FileReader();
-    reader.onload = function () {
-        importSuccessCallback(this.result);
-    };
-    reader.readAsText(file);
-    return true;
-}
-function importJson(spreadJson) {
-    function updateActiveCells() {
-        for (var i = 0; i < spread.getSheetCount(); i++) {
-            var sheet = spread.getSheet(i);
-            columnIndex = sheet.getActiveColumnIndex(),
-                rowIndex = sheet.getActiveRowIndex();
-            if (columnIndex !== undefined && rowIndex !== undefined) {
-                spread.getSheet(i).setActiveCell(rowIndex, columnIndex);
-            } else {
-                spread.getSheet(i).setActiveCell(0, 0);
-            }
-        }
-    }
-
-    if (spreadJson.version && spreadJson.sheets) {
-        spread.unbindAll();
-        spread.fromJSON(spreadJson);
-        attachSpreadEvents(true);
-        updateActiveCells();
-        spread.focus();
-        fbx.workbook(spread);
-        onCellSelected();
-        syncSpreadPropertyValues();
-        syncSheetPropertyValues();
-    } else {
-        alert(getResource("messages.invalidImportFile"));
-    }
-}
-
-function getFileName() {
-    function to2DigitsString(num) {
-        return ("0" + num).substr(-2);
-    }
-
-    var date = new Date();
-    return [
-        "export",
-        date.getFullYear(), to2DigitsString(date.getMonth() + 1), to2DigitsString(date.getDate()),
-        to2DigitsString(date.getHours()), to2DigitsString(date.getMinutes()), to2DigitsString(date.getSeconds())
-    ].join("");
-}
-
-function exportToJSON() {
-    var json = spread.toJSON({includeBindingSource: true}),
-        text = JSON.stringify(json);
-    var fileName = getFileName();
-    if (isSafari) {
-        showModal(uiResource.toolBar.downloadTitle, DOWNLOAD_DIALOG_WIDTH, $("#downloadDialog").children(), function () {
-            $("#downloadDialog").hide();
-        });
-        var link = $("#download");
-        link[0].href = "data:text/plain;" + text;
-    } else {
-        saveAs(new Blob([text], {type: "text/plain;charset=utf-8"}), fileName + ".json");
-    }
-}
-
-function exportToExcel() {
-    var fileName = getFileName();
-    var json = spread.toJSON({includeBindingSource: true});
-    excelIO.save(json, function (blob) {
-        if (isSafari) {
-            var reader = new FileReader();
-            reader.onloadend = function () {
-                showModal(uiResource.toolBar.downloadTitle, DOWNLOAD_DIALOG_WIDTH, $("#downloadDialog").children(), function () {
-                    $("#downloadDialog").hide();
-                });
-                var link = $("#download");
-                link[0].href = reader.result;
-            };
-            reader.readAsDataURL(blob);
-        } else {
-            saveAs(blob, fileName + ".xlsx");
-        }
-    }, function (e) {
-        alert(e);
-    });
-}
 // import / export related items (end)
 
 // format related items
@@ -6763,43 +6375,6 @@ function execInSelections(sheet, styleProperty, func) {
     }
 }
 // format related items (end)
-
-// dialog related items
-function showModal(title, width, content, callback) {
-    var $dialog = $("#modalTemplate"),
-        $body = $(".modal-body", $dialog);
-
-    $(".modal-title", $dialog).text(title);
-    $dialog.data("content-parent", content.parent());
-    $body.append(content);
-
-    // remove old and add new event handler since this modal is common used (reused)
-    $("#dialogConfirm").off("click");
-    $("#dialogConfirm").on("click", function () {
-        var result = callback();
-
-        // return an object with  { canceled: true } to tell not close the modal, otherwise close the modal
-        if (!(result && result.canceled)) {
-            $("#modalTemplate").modal("hide");
-        }
-    });
-
-    if (!$dialog.data("event-attached")) {
-        $dialog.on("hidden.bs.modal", function () {
-            var $originalParent = $(this).data("content-parent");
-            if ($originalParent) {
-                $originalParent.append($(".modal-body", this).children());
-            }
-        });
-        $dialog.data("event-attached", true);
-    }
-
-    // set width of the dialog
-    $(".modal-dialog", $dialog).css({width: width});
-
-    $dialog.modal("show");
-}
-// dialog related items (end)
 
 // clear related items
 function processClearAction($dropdown, action) {
@@ -7034,7 +6609,12 @@ function processAddSlicer() {
     addTableColumns();                          // get table header data from table, and add them to slicer dialog
 
     var SLICER_DIALOG_WIDTH = 230;              // slicer dialog width
-    showModal(uiResource.slicerDialog.insertSlicer, SLICER_DIALOG_WIDTH, $("#insertslicerdialog").children(), addSlicerEvent);
+    showModal({
+    	title: uiResource.slicerDialog.insertSlicer, 
+    	width: SLICER_DIALOG_WIDTH,
+    	content: $("#insertslicerdialog").children(),
+    	callback: addSlicerEvent
+    });
 }
 
 function addTableColumns() {

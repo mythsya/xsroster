@@ -1,7 +1,7 @@
-﻿var uiResource = {
+var uiResource = {
     toolBar: {
         zoom: {
-            title: "Zoom",
+            title: "显示比例",
             zoomOption: {
                 twentyFivePercentSize: "25%",
                 fiftyPercentSize: "50%",
@@ -15,132 +15,163 @@
             }
         },
         clear: {
-            title: "Clear",
+            title: "清除",
             clearActions: {
-                clearAll: "Clear All",
-                clearFormat: "Clear Format"
+                clearAll: "清除格式及数据",
+                clearFormat: "清除格式"
             }
         },
         export: {
-            title: "Export",
+            title: "导出Excel",
             exportActions: {
-                exportJson: "Export JSON",
-                exportExcel: "Export Excel"
+                exportJson: "导出JSON",
+                exportExcel: "导出Excel"
             }
         },
-        downloadTitle: "Save File",
-        download: "Right Click To Download Linked File As...",
-        showInspector: "Show Inspector",
-        hideInspector: "Hide Inspector",
-        importJson: "Import JSON",
-        importFile: "Import File",
-        insertTable: "Insert Table",
-        insertPicture: "Insert Picture",
-        insertComment: "Insert Comment",
-        insertSparkline: "Insert Sparkline",
-        insertSlicer: "Insert Slicer",
-        configTitle: "Config",
-        openTitle: "Open Others",
-        saveTitle: "Save",
-        publishTitle: "Publish",
-        printTitle: "Print",
+        downloadTitle: "保存文件",
+        download: "右击下载链接的文件另存为...",
+        showInspector: "显示切片器",
+        hideInspector: "隐藏切片器",
+        import: {
+        	title: "导入Excel",
+        	importActions: {
+                importJson: "导入JSON",
+                importFile: "导入Excel",
+        	},
+        	xlsxFileRequired: "请选择【xlsx】格式的Excel文件！"
+        },
+        insertTable: "插入表格",
+        insertPicture: "插入图片",
+        insertComment: "插入注释",
+        insertSparkline: "插入迷你图",
+        insertSlicer: "插入切片器",
+        configTitle: "配置",
+        openTitle: "打开其他",
+        create: {
+        	title: "创建"
+        },
+        save: {
+        	title: "保存",
+        	prompt: {
+        		title: "输入排班计划名称"
+        	}
+        },
+        publish: {
+        	title: "发布",
+        	confirmMessage: "请再次确认是否发布当前的排班计划？"
+        },
+        tag: {
+        	title: "标记版本",
+        	prompt: {
+        		title: "标记该版本为"
+        	}
+        },
+        printTitle: "打印",
         undo : {
             title: "Undo"
+        },
+        newexcel : {
+        	tempname: "新建排班计划"
         }
     },
     tabs: {
-        rosterHistroy: "Histroy",
-        spread: "Spread",
-        sheet: "Sheet",
-        cell: "Cell",
-        table: "Table",
-        data: "Data",
-        comment: "Comment",
-        picture: "Picture",
-        sparklineEx: "Sparkline",
-        slicer: "Slicer"
+        rosterHistroy: "历史",
+        spread: "电子表格",
+        sheet: "工作表",
+        cell: "单元格",
+        table: "表格",
+        data: "数据",
+        comment: "批注",
+        picture: "图片",
+        sparklineEx: "迷你图",
+        slicer: "切片器"
     },
     histroyTab: {
         general: {
-            openButtonTitle: "Open",
-            delButtonTitle: "Delete"
+            openButtonTitle: "打开",
+            delButtonTitle: "删除",
+            newButtonTitle: "全新创建排班计划",
+            copyButtonTitle: "复制创建排班计划"
+        },
+        dialog: {
+        	mustSelectOne: "请先选中一个排班计划！"
         }
     },
     spreadTab: {
         general: {
-            title: "General",
-            allowDragDrop: "Allow Drag and Drop",
-            allowDragFill: "Allow Drag and Fill",
-            allowZoom: "Allow Zoom",
-            allowOverfolow: "Allow Overflow",
-            showDragFillSmartTag: "Show Drag Fill Smart Tag"
+            title: "常规",
+            allowDragDrop: "允许拖放",
+            allowDragFill: "允许拖放填充",
+            allowZoom: "允许缩放",
+            allowOverfolow: "允许文字溢出",
+            showDragFillSmartTag: "显示拖放填充标签"
         },
         calculation: {
-            title: "Calculation",
+            title: "计算",
             referenceStyle: {
-                title: "Reference style",
+                title: "引用样式",
                 r1c1: "R1C1",
                 a1: "A1"
             }
         },
         scrollBar: {
-            title: "Scroll Bar",
-            showVertical: "Vertical ScrollBar",
-            showHorizontal: "Horizontal ScrollBar",
-            maxAlign: "Scrollbar Max Align",
-            showMax: "Scrollbar Show Max",
-            scrollIgnoreHidden: "Scroll Ignore Hidden Row or Column"
+            title: "滚动条",
+            showVertical: "显示垂直滚动条",
+            showHorizontal: "显示水平滚动条",
+            maxAlign: "滚动条最大分布",
+            showMax: "滚动条显示最大值",
+            scrollIgnoreHidden: "滚动时忽略隐藏行或列"
         },
         tabStip: {
-            title: "TabStrip",
-            visible: "TabStrip Visible",
-            newTabVisible: "New Tab Visible",
-            editable: "Tabstrip Editable",
-            showTabNavigation: "Show Tab Navigation"
+            title: "标签条",
+            visible: "标签条可见",
+            newTabVisible: "新标签可见",
+            editable: "标签条可编辑",
+            showTabNavigation: "显示标签切换工具"
         },
         color: {
-            title: "Color",
-            spreadBackcolor: "Spread Backcolor",
-            grayAreaBackcolor: "Gray Area Backcolor"
+            title: "颜色",
+            spreadBackcolor: "电子表格背景色",
+            grayAreaBackcolor: "灰度区域背景色"
         },
         tip: {
-            title: "Tip",
-            showDragDropTip: "Show Drag Drop Tip",
-            showDragFillTip: "Show Drag Fill Tip",
+            title: "提示",
+            showDragDropTip: "显示拖放提示",
+            showDragFillTip: "显示拖放填充提示",
             scrollTip: {
-                title: "Scroll Tip",
+                title: "滚动提示",
                 values: {
-                    none: "None",
-                    horizontal: "Horizontal",
-                    vertical: "Vertical",
-                    both: "Both"
+                    none: "无",
+                    horizontal: "水平",
+                    vertical: "垂直",
+                    both: "水平和垂直"
                 }
             },
             resizeTip: {
-                title: "Resize Tip",
+                title: "尺寸调整提示",
                 values: {
-                    none: "None",
-                    column: "Column",
-                    row: "Row",
-                    both: "Both"
+                    none: "无",
+                    column: "列",
+                    row: "行",
+                    both: "列和行"
                 }
             }
         },
         sheets: {
-            title: "Sheets",
-            sheetName: "Sheet name",
-            sheetVisible: "Sheet Visible"
+            title: "工作表",
+            sheetName: "工作表名称",
+            sheetVisible: "工作表可见"
         },
         cutCopy: {
-            title: "Cut / Copy",
+            title: "剪切/复制",
             cutCopyIndicator: {
-                visible: "Show Indicator",
-                borderColor: "Indicator Border Color"
+                visible: "显示指示器",
+                borderColor: "指示器边框颜色"
             },
-            allowCopyPasteExcelStyle: "allowCopyPasteExcelStyle",
-            allowExtendPasteRange: "allowExtendPasteRange",
+            allowCopyPasteExcelStyle: "允许复制粘贴Excel样式",
+            allowExtendPasteRange: "允许扩展粘贴范围",
             copyPasteHeaderOptions: {
-                title: "HeaderOptions",
+                title: "Header Options",
                 option: {
                     noHeaders: "No Headers",
                     rowHeaders: "Row Headers",
@@ -150,9 +181,9 @@
             }
         },
         spreadTheme: {
-            title: "Spread Theme",
+            title: "电子表格主题",
             theme: {
-                title: "Theme",
+                title: "主题",
                 option: {
                     spreadJS: "SpreadJS",
                     excel2013White: "Excel2013 White",
@@ -166,34 +197,34 @@
         resizeZeroIndicator: {
             title: "ResizeZeroIndicator",
             option: {
-                defaultValue: "Default",
-                enhanced: "Enhanced"
+                defaultValue: "默认",
+                enhanced: "增强"
             }
         }
     },
     sheetTab: {
         general: {
-            title: "General",
-            rowCount: "Row",
-            columnCount: "Column",
-            name: "Name",
-            tabColor: "Tab Color"
+            title: "常规",
+            rowCount: "行",
+            columnCount: "列",
+            name: "名称",
+            tabColor: "选项卡颜色"
         },
         freeze: {
-            title: "Freeze",
-            frozenRowCount: "Header Rows",
-            frozenColumnCount: "Header Columns",
-            trailingFrozenRowCount: "Footer Rows",
-            trailingFrozenColumnCount: "Footer Columns",
-            frozenLineColor: "Color",
-            freezePane: "Freeze",
-            unfreeze: "Unfreeze"
+            title: "冻结",
+            frozenRowCount: "标题行",
+            frozenColumnCount: "标题列",
+            trailingFrozenRowCount: "页脚行",
+            trailingFrozenColumnCount: "页脚列",
+            frozenLineColor: "颜色",
+            freezePane: "冻结",
+            unfreeze: "取消冻结"
         },
         gridLine: {
-            title: "Grid Line",
-            showVertical: "Vertical Visible",
-            showHorizontal: "Horizontal Visible",
-            color: "Color"
+            title: "网格线",
+            showVertical: "垂直可见",
+            showHorizontal: "水平可见",
+            color: "颜色"
         },
         header: {
             title: "Header",
@@ -201,12 +232,12 @@
             showColumnHeader: "Column Header Visible"
         },
         selection: {
-            title: "Selection",
-            borderColor: "Border Color",
-            backColor: "Backcolor",
-            hide: "Hide Selection",
+            title: "选择",
+            borderColor: "边框颜色",
+            backColor: "背景色",
+            hide: "隐藏选择",
             policy: {
-                title: "Policy",
+                title: "选择策略",
                 values: {
                     single: "Single",
                     range: "Range",
@@ -214,44 +245,44 @@
                 }
             },
             unit: {
-                title: "Unit",
+                title: "单位",
                 values: {
-                    cell: "Cell",
-                    row: "Row",
-                    column: "Column"
+                    cell: "单元格",
+                    row: "行",
+                    column: "列"
                 }
             }
         },
         protection: {
-            title: "Protection",
-            protectSheet: "Protect Sheet",
-            selectLockCells: "Select locked cells",
-            selectUnlockedCells: "Select unlocked cells",
-            sort: "Sort",
-            useAutoFilter: "Use AutoFilter",
-            resizeRows: "Resize rows",
-            resizeColumns: "Resize columns",
-            editObjects: "Edit objects"
+            title: "保护",
+            protectSheet: "保护工作表",
+            selectLockCells: "选择锁定的单元格",
+            selectUnlockedCells: "选择未锁定的单元格",
+            sort: "排序",
+            useAutoFilter: "使用自动筛选",
+            resizeRows: "调整行高",
+            resizeColumns: "调整列宽",
+            editObjects: "编辑对象"
         }
     },
     cellTab: {
         style: {
-            title: "Style",
-            fontFamily: "Font",
-            fontSize: "Size",
-            foreColor: "Forecolor",
-            backColor: "Backcolor",
-            waterMark: "Label",
-            cellPadding: "Padding",
+            title: "样式",
+            fontFamily: "字体",
+            fontSize: "大小",
+            foreColor: "字体颜色",
+            backColor: "背景色",
+            waterMark: "标签",
+            cellPadding: "填充",
             cellLabel: {
-                title: "Label Option",
-                visibility: "Visibility",
+                title: "标签选项",
+                visibility: "可见性",
                 visibilityOption: {
-                    auto: "Auto",
-                    visible: "Visible",
-                    hidden: "Hidden"
+                    auto: "自动",
+                    visible: "可见",
+                    hidden: "隐藏"
                 },
-                alignment: "Alignment",
+                alignment: "对齐",
                 alignmentOption: {
                     topLeft: "Top Left",
                     topCenter: "Top Center",
@@ -260,13 +291,13 @@
                     bottomCenter: "Bottom Center",
                     bottomRight: "Bottom Right"
                 },
-                fontFamily: "Font",
-                fontSize: "Size",
-                foreColor: "Forecolor",
-                labelMargin: "Margin"
+                fontFamily: "字体",
+                fontSize: "大小",
+                foreColor: "字体颜色",
+                labelMargin: "间距"
             },
             borders: {
-                title: "Border",
+                title: "边框",
                 values: {
                     bottom: "Bottom Border",
                     top: "Top Border",
@@ -285,10 +316,10 @@
             }
         },
         border: {
-            title: "Border",
-            rangeBorderLine: "Line",
-            rangeBorderColor: "Color",
-            noBorder: "None",
+            title: "边框",
+            rangeBorderLine: "线条",
+            rangeBorderColor: "颜色",
+            noBorder: "无",
             outsideBorder: "Outside Border",
             insideBorder: "Inside Border",
             allBorder: "All Border",
@@ -300,61 +331,61 @@
             bottomBorder: "Bottom Border"
         },
         alignment: {
-            title: "Alignment",
-            top: "Top",
-            middle: "Middle",
-            bottom: "Bottom",
-            left: "Left",
-            center: "Center",
-            right: "Right",
-            wrapText: "Wrap Text",
-            decreaseIndent: "Decrease Indent",
-            increaseIndent: "Increase Indent"
+            title: "对齐",
+            top: "顶部对齐",
+            middle: "垂直居中",
+            bottom: "底部对齐",
+            left: "左对齐",
+            center: "居中",
+            right: "右对齐",
+            wrapText: "自动换行",
+            decreaseIndent: "减少缩进",
+            increaseIndent: "增加缩进"
         },
         format: {
-            title: "Format",
+            title: "格式",
             commonFormat: {
                 option: {
-                    general: "General",
-                    number: "Number",
-                    currency: "Currency",
-                    accounting: "Accounting",
-                    shortDate: "Short Date",
-                    longDate: "Long Date",
-                    time: "Time",
-                    percentage: "Percentage",
-                    fraction: "Fraction",
-                    scientific: "Scientific",
-                    text: "Text"
+                    general: "常规",
+                    number: "数字",
+                    currency: "货币",
+                    accounting: "会计专用",
+                    shortDate: "短日期",
+                    longDate: "长日期",
+                    time: "时间",
+                    percentage: "百分比",
+                    fraction: "分数",
+                    scientific: "科学记数",
+                    text: "文本"
                 }
             },
             percentValue: "0%",
             commaValue: " #,##0.00; (#,##0.00); \"-\"??;@",
-            custom: "Custom",
-            setButton: "Set"
+            custom: "自定义",
+            setButton: "设置"
         },
         merge: {
-            title: "Merge Cells",
-            mergeCells: "Merge",
-            unmergeCells: "Unmerge"
+            title: "合并单元格",
+            mergeCells: "合并",
+            unmergeCells: "取消合并"
         },
         cellType: {
-            title: "Cell Type"
+            title: "单元格类型"
         },
         conditionalFormat: {
-            title: "Conditional Formatting",
-            useConditionalFormats: "Conditional Formats"
+            title: "条件格式化",
+            useConditionalFormats: "使用条件格式"
         },
         protection: {
-            title: "Protection",
-            lock: "Locked",
-            sheetIsProtected: "Sheet is protected",
-            sheetIsUnprotected: "Sheet is unprotected"
+            title: "保护",
+            lock: "锁定",
+            sheetIsProtected: "工作表受已被保护",
+            sheetIsUnprotected: "工作表已撤销保护"
         }
     },
     tableTab: {
         tableStyle: {
-            title: "Table Style",
+            title: "表格样式",
             light: {
                 light1: "light1",
                 light2: "light2",
@@ -375,59 +406,59 @@
             }
         },
         general: {
-            title: "General",
-            tableName: "Name"
+            title: "常规",
+            tableName: "名称"
         },
         options: {
-            title: "Options",
-            filterButton: "Filter Button",
-            headerRow: "Header Row",
-            totalRow: "Total Row",
+            title: "选项",
+            filterButton: "筛选按钮",
+            headerRow: "标题行",
+            totalRow: "汇总行",
             bandedRows: "Banded Rows",
             bandedColumns: "Banded Columns",
-            firstColumn: "First Column",
-            lastColumn: "Last Column"
+            firstColumn: "第一行",
+            lastColumn: "最后一行"
         }
     },
     dataTab: {
         sort: {
-            title: "Sort & Filter",
-            asc: "Sort A-Z",
-            desc: "Sort Z-A",
-            filter: "Filter"
+            title: "排序和筛选",
+            asc: "升序A-Z",
+            desc: "降序Z-A",
+            filter: "筛选"
         },
         group: {
-            title: "Group",
-            group: "Group",
-            ungroup: "Ungroup",
-            showDetail: "Show Detail",
-            hideDetail: "Hide Detail",
+            title: "组合",
+            group: "组合",
+            ungroup: "取消组合",
+            showDetail: "显示明细",
+            hideDetail: "隐藏明细",
             showRowOutline: "Show Row Outline",
             showColumnOutline: "Show Column Outline"
         },
         dataValidation: {
-            title: "Data Validation",
-            setButton: "Set",
-            clearAllButton: "Clear All",
-            circleInvalidData: "Circle Invalid Data",
+            title: "数据有效性",
+            setButton: "设置",
+            clearAllButton: "清除所有",
+            circleInvalidData: "圈释无效数据",
             setting: {
-                title: "Setting",
+                title: "设置",
                 values: {
                     validatorType: {
-                        title: "Validator Type",
+                        title: "有效性类型",
                         option: {
                             anyValue: "Any Value",
-                            number: "Number",
-                            list: "List",
-                            formulaList: "FormulaList",
-                            date: "Date",
-                            textLength: "Text Length",
-                            custom: "Custom"
+                            number: "数字",
+                            list: "序列",
+                            formulaList: "公式列表",
+                            date: "日期",
+                            textLength: "文本长度",
+                            custom: "自定义"
                         }
                     },
-                    ignoreBlank: "IgnoreBlank",
+                    ignoreBlank: "忽略空值",
                     validatorComparisonOperator: {
-                        title: "Operator",
+                        title: "运算符",
                         option: {
                             between: "Between",
                             notBetween: "NotBetween",
@@ -440,61 +471,61 @@
                         }
                     },
                     number: {
-                        minimum: "Minimum",
-                        maximum: "Maximum",
-                        value: "Value",
+                        minimum: "最小值",
+                        maximum: "最大值",
+                        value: "值",
                         isInteger: "Is Integer"
                     },
                     source: "Source",
                     date: {
-                        startDate: "Start Date",
-                        endDate: "End Date",
-                        value: "Value",
+                        startDate: "开始日期",
+                        endDate: "结束日期",
+                        value: "值",
                         isTime: "Is Time"
                     },
-                    formula: "Formula"
+                    formula: "公式"
                 }
             },
             inputMessage: {
-                title: "Input Message",
+                title: "输入信息",
                 values: {
-                    showInputMessage: "Show when cell is selected",
-                    title: "Title",
-                    message: "Message"
+                    showInputMessage: "选中单元格时显示",
+                    title: "标题",
+                    message: "输入信息"
                 }
             },
             errorAlert: {
-                title: "Error Alert",
+                title: "错误提示",
                 values: {
-                    showErrorAlert: "Show after invalid data is entered",
+                    showErrorAlert: "输入无效数据时提示错误",
                     alertType: {
-                        title: "Alert Type",
+                        title: "提示类型",
                         option: {
                             stop: "Stop",
                             warning: "Warning",
                             information: "Information"
                         }
                     },
-                    title: "Title",
-                    message: "Message"
+                    title: "标题",
+                    message: "错误信息"
                 }
             }
         }
     },
     commentTab: {
         general: {
-            title: "General",
-            dynamicSize: "Dynamic Size",
-            dynamicMove: "Dynamic Move",
-            lockText: "Lock Text",
-            showShadow: "Show Shadow"
+            title: "常规",
+            dynamicSize: "动态调整大小",
+            dynamicMove: "动态移动位置",
+            lockText: "锁定文本",
+            showShadow: "显示阴影"
         },
         font: {
-            title: "Font",
-            fontFamily: "Font",
-            fontSize: "Size",
+            title: "字体",
+            fontFamily: "Font Family",
+            fontSize: "大小",
             fontStyle: {
-                title: "Style",
+                title: "样式",
                 values: {
                     normal: "normal",
                     italic: "italic",
@@ -514,18 +545,18 @@
             textDecoration: {
                 title: "Decoration",
                 values: {
-                    none: "none",
-                    underline: "underline",
-                    overline: "overline",
-                    linethrough: "linethrough"
+                    none: "无",
+                    underline: "下划线",
+                    overline: "上划线",
+                    linethrough: "删除线"
                 }
             }
         },
         border: {
-            title: "Border",
-            width: "Width",
+            title: "边框",
+            width: "宽度",
             style: {
-                title: "Style",
+                title: "样式",
                 values: {
                     none: "none",
                     hidden: "hidden",
@@ -539,17 +570,17 @@
                     outset: "outset"
                 }
             },
-            color: "Color"
+            color: "颜色"
         },
         appearance: {
-            title: "Appearance",
+            title: "外观",
             horizontalAlign: {
-                title: "Horizontal",
+                title: "水平对齐",
                 values: {
-                    left: "left",
-                    center: "center",
-                    right: "right",
-                    general: "general"
+                    left: "靠左",
+                    center: "居中",
+                    right: "靠右",
+                    general: "常规"
                 }
             },
             displayMode: {
@@ -559,27 +590,27 @@
                     hoverShown: "HoverShown"
                 }
             },
-            foreColor: "Forecolor",
-            backColor: "Backcolor",
+            foreColor: "前景色",
+            backColor: "背景色",
             padding: "Padding",
             zIndex: "Z-Index",
-            opacity: "Opacity"
+            opacity: "透明度"
         }
     },
     pictureTab: {
         general: {
-            title: "General",
-            moveAndSize: "Move and size with cells",
-            moveAndNoSize: "Move and don't size with cells",
-            noMoveAndSize: "Don't move and size with cells",
-            fixedPosition: "Fixed Position"
+            title: "常规",
+            moveAndSize: "大小和位置随着单元格改变",
+            moveAndNoSize: "大小固定，位置随着单元格改变",
+            noMoveAndSize: "大小和位置不随单元格改变",
+            fixedPosition: "位置固定"
         },
         border: {
-            title: "Border",
-            width: "Width",
-            radius: "Radius",
+            title: "边框",
+            width: "宽度",
+            radius: "半径",
             style: {
-                title: "Style",
+                title: "样式",
                 values: {
                     solid: "solid",
                     dotted: "dotted",
@@ -591,10 +622,10 @@
                     outset: "outset"
                 }
             },
-            color: "Color"
+            color: "颜色"
         },
         appearance: {
-            title: "Appearance",
+            title: "外观",
             stretch: {
                 title: "Stretch",
                 values: {
@@ -604,20 +635,20 @@
                     none: "None"
                 }
             },
-            backColor: "Backcolor"
+            backColor: "背景色"
         }
     },
     sparklineExTab: {
         pieSparkline: {
-            title: "PieSparkline Setting",
+            title: "饼图设置",
             values: {
-                percentage: "Percentage",
-                color: "Color ",
-                setButton: "Set"
+                percentage: "百分比",
+                color: "颜色",
+                setButton: "设置"
             }
         },
         areaSparkline: {
-            title: "AreaSparkline Setting",
+            title: "面积图设置",
             values: {
                 line1: "Line 1",
                 line2: "Line 2",
@@ -626,7 +657,7 @@
                 points: "Points",
                 positiveColor: "Positive Color",
                 negativeColor: "Negative Color",
-                setButton: "Set"
+                setButton: "设置"
             }
         },
         boxplotSparkline: {
@@ -902,9 +933,9 @@
             }
         },
         general: {
-            title: "General",
-            name: "Name",
-            captionName: "Caption Name",
+            title: "常规",
+            name: "名称",
+            captionName: "标题名称",
             itemSorting: {
                 title: "Item Sorting",
                 option: {
@@ -1272,8 +1303,8 @@
         insertSlicer: "Insert Slicer"
     },
     passwordDialog: {
-        title: "Password",
-        error: "Incorrect Password!"
+        title: "密码",
+        error: "密码错误!"
     },
     tooltips: {
         style: {
@@ -1284,14 +1315,14 @@
             fontLinethrough: "Strikethrough text."
         },
         alignment: {
-            leftAlign: "Align text to the left.",
-            centerAlign: "Center text.",
-            rightAlign: "Align text to the right.",
-            topAlign: "Align text to the top.",
-            middleAlign: "Align text to the middle.",
-            bottomAlign: "Align text to the bottom.",
-            decreaseIndent: "Decrease the indent level.",
-            increaseIndent: "Increase the indent level."
+            leftAlign: "左对齐",
+            centerAlign: "水平居中",
+            rightAlign: "右对齐",
+            topAlign: "顶部对齐",
+            middleAlign: "垂直居中",
+            bottomAlign: "底部对齐",
+            decreaseIndent: "减少缩进",
+            increaseIndent: "增加缩进"
         },
         border: {
             outsideBorder: "Outside Border",
@@ -1320,36 +1351,40 @@
         hyperlinkToolTip: "Hyperlink Tooltip"
     },
     messages: {
-        invalidImportFile: "Invalid file, import failed.",
-        duplicatedSheetName: "Duplicated sheet name.",
-        duplicatedTableName: "Duplicated table name.",
+        invalidImportFile: "无效文件，导入失败.",
+        duplicatedSheetName: "工作表名重复.",
+        duplicatedTableName: "表格名重复.",
         rowColumnRangeRequired: "Please select a range of row or column.",
-        imageFileRequired: "The file must be image!",
+        imageFileRequired: "文件必须是图片格式!",
         duplicatedSlicerName: "Duplicated slicer name.",
-        invalidSlicerName: "Slicer name is not valid.",
-        xlsxFileRequired: "The file must be .xlsx excel file!"
+        invalidSlicerName: "Slicer name is not valid."
     },
     contextMenu: {
-        cutItem: "Cut",
-        copyItem: "Copy",
-        pasteItem: "Paste",
-        removeItem: "Remove",
-        insertItem: "Insert",
-        deleteItem: "Delete",
-        mergeItem: "Merge",
-        unmergeItem: "Unmerge"
+        cutItem: "剪切",
+        copyItem: "复制",
+        pasteItem: "粘贴",
+        removeItem: "移除",
+        insertItem: "插入",
+        deleteItem: "删除",
+        mergeItem: "合并",
+        unmergeItem: "取消合并"
     },
     removeSheetDialog: {
-        confirmTitle: "Do you confirm to remove this sheet?"
+        confirmTitle: "请再次确认是否移除工作表？"
     },
     dialog: {
-        ok: " OK ",
-        cancel: "Cancel",
-        confirm: "Confirmation",
-        alert: "Alert"
+        ok: "确定",
+        cancel: "取消",
+        yes: "是",
+        no: "否",
+        confirm: "确认框",
+        alert: "提示框",
+        prompt: "输入框",
+        waitingNow: "请稍候...",
+        promptRequired: "该输入项必填！"
     },
     rosterHistroy: {
-        dialogTitle: "Roster Histroy"
+        dialogTitle: "既往排班表"
     }
 };
 

@@ -317,18 +317,19 @@ li.ui-corner-all:hover {
 }
 
 #modalTemplate {
-    padding-top: 10%;
+    padding-top: 15%;
     /* used to move the modal dialog down with the specified value */
 }
 
+
 @media (max-height: 720px) {
     #modalTemplate {
-        padding-top: 0;
+        padding-top: 5%;
     }
 }
 
 .modal-body {
-    padding-bottom: 30px;
+    /* padding-bottom: 30px; */
     /* used to set the space between modal body and footer */
     font-size: 12px;
 }

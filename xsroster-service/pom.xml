@@ -22,7 +22,7 @@
       <groupId>org.xsris.addons</groupId>
       <artifactId>xsroster-entity</artifactId>
       <version>${product.version}</version>
-    </dependency>    
+    </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
