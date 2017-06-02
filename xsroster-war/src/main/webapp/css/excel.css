@@ -349,6 +349,7 @@ body.modal-open {
     font-weight: normal;
 }
 
+/*
 .modal-body input[type="button"],
 .modal-body input[type="input"],
 .modal-body select {
@@ -357,6 +358,7 @@ body.modal-open {
     box-sizing: border-box;
     height: 21px;
 }
+*/
 
 .dialogLabel {
     width: 80px;
@@ -900,4 +902,10 @@ body.modal-open {
 
 #download {
     width: 98%;
+}
+
+#newRosterPromptForm .inputGroupContainer .form-control-feedback,
+#newRosterPromptForm .selectContainer .form-control-feedback {
+	top: 0;
+	right: -15px;
 }

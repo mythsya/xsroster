@@ -25,7 +25,7 @@ public class ExcelFileRevision extends TrackableEntity {
 	private String name;
 	private String tagName;
 	private ExcelFile excelFile;
-	private String excelContent;
+	private byte[] excelContent;
 	private String jsonContent;
 	private Set<ExcelFileRevisionOutput> outputs = new HashSet<ExcelFileRevisionOutput>();
 	private Boolean published = false;
@@ -33,7 +33,7 @@ public class ExcelFileRevision extends TrackableEntity {
 	@Lob
 	@Basic(fetch = FetchType.LAZY)
 	@Column(name = "EXCEL_CONTENT")
-	public String getExcelContent() {
+	public byte[] getExcelContent() {
 		return excelContent;
 	}
 
@@ -70,7 +70,7 @@ public class ExcelFileRevision extends TrackableEntity {
 		return tagName;
 	}
 
-	public void setExcelContent(String excelContent) {
+	public void setExcelContent(byte[] excelContent) {
 		this.excelContent = excelContent;
 	}
 

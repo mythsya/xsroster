@@ -2638,40 +2638,6 @@ function attachOtherEvents() {
     $("#sparklineextypes button").click(processAddSparklineEx);
 }
 
-function processFileSelected() {
-    var file = this.files[0],
-        action = $(this).data("action");
-
-    if (!file) return false;
-
-    // clear to make sure change event occures even when same file selected again
-    $("#fileSelector").val("");
-
-    if (action === "doImport") {
-        if (!/application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet/.test(file.type)) {            
-            showAlertDialog({
-            	message: getResource("toolBar.import.xlsxFileRequired")
-            });
-            return false;
-        }
-        return importFile(file);
-    }
-
-    if (!/image\/\w+/.test(file.type)) {
-        alert(getResource("messages.imageFileRequired"));
-        return false;
-    }
-    var reader = new FileReader();
-    reader.onload = function () {
-        switch (action) {
-            case "addpicture":
-                addPicture(this.result);
-                break;
-        }
-    };
-    reader.readAsDataURL(file);
-}
-
 var PICTURE_ROWCOUNT = 16, PICTURE_COLUMNCOUNT = 10;
 function addPicture(pictureUrl) {
     var sheet = spread.getActiveSheet();

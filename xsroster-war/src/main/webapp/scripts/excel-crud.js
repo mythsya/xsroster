@@ -1,11 +1,15 @@
 $(document).ready(function() {
+	$(window).unload(function() {
+		valCurrentRosterId("");
+		valCurrentRosterName("", true);
+	});
+	
 	$("#current_roster_name_lbl").on("dblclick", function(e) {
 		editCurrentRosterName(e, $(this));
 	});
 	
-    $("#doImport").click(function () {
-        $("#fileSelector").data("action", this.id);
-        $("#fileSelector").click();
+    $("#doImport").click(function (e) {
+    	importExistingExcel(e, $(this));
     });
     
     fileImporterHandlers["doImport"] = handler4ImportExcel;
@@ -43,16 +47,22 @@ $(document).ready(function() {
 	});
 });
 
+function valCurrentRosterId(v) {
+	return setOrGetValue($("#current_roster_id"), v);
+}
+
+function valCurrentRosterTag(v) {
+	return setOrGetValue($("#current_roster_tag"), v);
+}
+
 function valCurrentRosterName(v, forceSync) {
-	if (v) {
-		$("#current_roster_name").val(v);
-		if (forceSync === true || forceSync === 'true') {
-			$("#current_roster_name_lbl").text(v);
-		}
-	} else {
-		v = $("#current_roster_name").val();
+	var v2 = setOrGetValue($("#current_roster_name"), v);
+	
+	if (forceSync === true || forceSync === 'true') {
+		$("#current_roster_name_lbl").text(v2);
 	}
-	return v;
+	
+	return v2;
 }
 
 function editCurrentRosterName(e, $self) {
@@ -86,6 +96,49 @@ function editCurrentRosterName(e, $self) {
 	}
 }
 
+function importExistingExcel(e, $self) {	
+	showConfirmDialog({
+		message: getResource("toolBar.import.remindSaveCurrentEdit"),
+		onClose: function(parent, confirmed) {
+			if (confirmed === true) {
+				$("#fileSelector").data("action", $self.attr("id"));
+			    $("#fileSelector").click();
+			}
+		}
+	});
+}
+
+function handler4ImportExcel(file, action) {
+	if (!/application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet/.test(file.type)) {            
+        showAlertDialog({
+        	message: getResource("toolBar.import.xlsxFileRequired")
+        });
+        return false;
+    }
+	
+	var initName = file.name.substring(0, file.name.lastIndexOf("."));
+	showNewRosterPromptDialog({
+		width: 400,
+		title: getResource("toolBar.newexcel.prompt.title"),
+		onOk: function(dlg, fields) {
+		},
+		onClose: function(dlg, fields) {
+			var name = fields.name.val(), tag = fields.tag.val();
+			if (fields.valid===true && name && tag) {
+				importSpreadFromExcel(file);
+				valCurrentRosterId("");
+				valCurrentRosterTag(tag);
+				valCurrentRosterName(name, true);
+				appendNewRoster(name, tag, true);				
+			}
+		}
+	}, {
+		name: initName
+	});	
+
+    return true;
+}
+
 function saveCurrentRoster(e, $self) {
 	function doSave() {
 		var $dlg = showProgressDialog({
@@ -96,25 +149,50 @@ function saveCurrentRoster(e, $self) {
 	    var json = spread.toJSON({includeBindingSource: true});
 	    var jsonText = JSON.stringify(json);
 	    excelIO.save(json, function (blob) {
-	    	console.info(jsonText);
-	    	console.info(blob);
+	    	var formData = new FormData();
+	    	formData.append("id", valCurrentRosterId());
+	    	formData.append("name", valCurrentRosterName());
+	    	formData.append("tag", valCurrentRosterTag());
+	    	formData.append("path", "");
+	    	formData.append("jsonCotent", jsonText);
+	    	formData.append("xlsxContent", blob);
+	    	
+	    	$.ajax({
+	    		url: AppEnv.contextPath+"/excel/save",
+	    		type: 'POST',
+	    		data: formData,
+	    		cache: false,
+	    		processData: false,
+	    		contentType: false,
+	    		success: function(data, status) {
+	    			$dlg.modal("hide");
+	    			initZtreeNodes();	    			
+	    		}, 
+	    		error: function(xhr, msg, e) {
+	    			$dlg.modal("hide");
+	    			alert(msg);
+	    		}
+	    	});
 	    });
 	}
 	
-	var rosterName = valCurrentRosterName();
-	if (rosterName == "" || rosterName == getResource("toolBar.newexcel.tempname")) {		
-		showSinglePromptDialog({
+	var rosterTag=valCurrentRosterTag(), rosterName = valCurrentRosterName();
+	if (!rosterTag || !rosterName || rosterName == getResource("toolBar.newexcel.tempname")) {		
+		showNewRosterPromptDialog({
 			width: 400,
-			title: getResource("toolBar.save.prompt.title"),
-			onOk: function(dlg, field) {
-			},
-			onClose: function(dlg, field) {
-				var fv = field.val();
-				if (fv) {
-					valCurrentRosterName(fv, true);
+			title: getResource("toolBar.newexcel.prompt.title"),
+			onClose: function(dlg, fields) {
+				var name = fields.name.val(), tag = fields.tag.val();
+				if (fields.valid===true && name && tag) {
+					valCurrentRosterTag(tag);
+					valCurrentRosterName(name, true);
+					appendNewRoster(name, tag, true);
 					doSave();
 				}
 			}
+		}, {
+			name: rosterName,
+			tag: rosterTag
 		});
 	} else {
 		doSave();
@@ -155,23 +233,33 @@ function delSelectedRoster(e, $self) {
 }
 
 function doCreateNewRoster($self, callback) {
-	showSinglePromptDialog({
-		width: 400,
-		title: getResource("toolBar.save.prompt.title"),
-		onOk: function(dlg, field) {
-		},
-		onClose: function(dlg, field) {
-			var fv = field.val();
-			if (fv) {
-				valCurrentRosterName(fv, true);
-				callback(fv);
+	showConfirmDialog({
+		message: getResource("histroyTab.dialog.remindSaveCurrentEdit"),
+		onClose: function(parent, confirmed) {
+			if (confirmed === true) {
+				showNewRosterPromptDialog({
+					width: 400,
+					title: getResource("toolBar.newexcel.prompt.title"),
+					onOk: function(dlg, fields) {
+					},
+					onClose: function(dlg, fields) {
+						var name = fields.name.val(), tag = fields.tag.val();
+						if (fields.valid===true && name && tag) {
+							valCurrentRosterTag(tag);
+							valCurrentRosterName(name, true);
+							appendNewRoster(name, tag, true);
+							callback(name, tag);
+						}
+					}
+				});	
 			}
 		}
-	});	
+	});
 }
 
 function createNewRoster(e, $self) {
-	doCreateNewRoster($self, function(name) {
+	doCreateNewRoster($self, function(name, tag) {
+		valCurrentRosterId("");
 		spread.clearSheets();
 		var sheet = new GC.Spread.Sheets.Worksheet('Sheet1');
 		spread.addSheet(0, sheet);
@@ -186,18 +274,10 @@ function copyCreateNewRoster(e, $self) {
 		return false;
 	}
 	
-	doCreateNewRoster($self, function(name) {
-		
+	doCreateNewRoster($self, function(name, tag) {
+		valCurrentRosterId("");
 	});
 }
 
-function handler4ImportExcel(file, action) {
-	if (!/application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet/.test(file.type)) {            
-        showAlertDialog({
-        	message: getResource("toolBar.import.xlsxFileRequired")
-        });
-        return false;
-    }
-    return importSpreadFromExcel(file);
-}
+
 

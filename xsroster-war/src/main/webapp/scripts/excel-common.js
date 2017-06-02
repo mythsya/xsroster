@@ -124,7 +124,8 @@ function showModal(cfg) {
   
     var onOk = cfg.onOk || callback,
       onCancel = cfg.onCancel || callback,
-      onClose = cfg.onClose || function() {};  
+      onClose = cfg.onClose || function() {},
+      onShown = cfg.onShown || function() {};
 
     var $dialog = $("#modalTemplate"),
       $header = $(".modal-header", $dialog),
@@ -174,6 +175,11 @@ function showModal(cfg) {
             $dialog.modal("hide");
         }
     });
+    
+    $dialog.off("shown.bs.modal");
+    $dialog.on("shown.bs.modal", function (e) {    	
+    	onShown($dialog, e);
+    });
 
     $dialog.off("hidden.bs.modal");
     $dialog.on("hidden.bs.modal", function (e) {
@@ -198,7 +204,7 @@ var progressTimer, progressValue = 0;
 function showProgressDialog(cfg) {
 	var $dialog = showModal({
 		title: cfg.title || getResource("dialog.waitingNow"),
-		width: cfg.width || 500,
+		width: cfg.width || 400,
 		content: $("#progressBarDialog").children(),
 		hideFooter: true,
 		onClose: function($parent, e) {
@@ -237,12 +243,23 @@ function showConfirmDialog(cfg) {
 	}
 	var $dialog = showModal({
 		title: cfg.title || getResource("dialog.confirm"),
-		width: cfg.width || 500,
+		width: cfg.width || 400,
 		buttonsYESNO: !(cfg.buttonsYESNO === false || cfg.buttonsYESNO === 'false'),
 		content: $dlg.children(),
-		onOk: cfg.onOk,
-		onCancel: cfg.onCancel,
-		onClose: cfg.onClose
+		onShown: function(dlg, e) {
+			$dialog.removeData("confirmed");
+		},
+		onOk: function(dlg, e) {
+			$dialog.data("confirmed", true);
+			if(cfg.onOk) cfg.onOk(dlg, e);
+		},
+		onCancel: function(dlg, e) {
+			$dialog.data("confirmed", false);
+			if(cfg.onCancel) cfg.onCancel(dlg, e);
+		},
+		onClose: function(parent, e) {
+			if(cfg.onClose) cfg.onClose(parent, $dialog.data("confirmed"));
+		}
 	});
 	return $dialog;
 }
@@ -256,7 +273,7 @@ function showAlertDialog(cfg) {
 	}
 	var $dialog = showModal({
 		title: cfg.title || getResource("dialog.alert"),
-		width: cfg.width || 500,
+		width: cfg.width || 400,
 		content: $dlg.children(),
 		hideCancel: true,
 		onOk: cfg.onOk,		
@@ -275,22 +292,32 @@ function showSinglePromptDialog(cfg) {
 		title: cfg.title || getResource("dialog.prompt"),
 		width: cfg.width || 500,
 		content: $dlg.children(),
+		onShown: function(dlg, e) {
+			var $form = $("#"+$formId, dlg);
+			$form.removeData("valid");
+		},
 		onOk:  function(dlg, e) {
 			var $form = $("#"+$formId, dlg);
 			if ($form && $form.data('formValidation')) {
 				if($form.data('formValidation').validate().isValid()) {
+					$form.data("valid", true);
 					var $field = $("#prompt-single-field", $form);
 					if (cfg.onOk) cfg.onOk(dlg, $field);
 					return;
 				}
 			}
+			$form.data("valid", false);
 			return { canceled : true };
 		},
-		onCancel: cfg.onCancel,
-		onClose: function(dlg, e) {
-			var $form = $("#"+$formId, dlg);	
+		onCancel: function(dlg, e) {
+			var $form = $("#"+$formId, dlg);
+			$form.data("valid", false);
+			if (cfg.onCancel) cfg.onCancel(dlg, $form);
+		},
+		onClose: function(parent, e) {
+			var $form = $("#"+$formId, parent);	
 			var $field = $("#prompt-single-field", $form);	
-			if (cfg.onClose) cfg.onClose(dlg, $field);
+			if (cfg.onClose) cfg.onClose(parent, $field, $form.data("valid"));
 			
 			if ($form && $form.data('formValidation')) {				
 				$form.data('formValidation').resetForm(true).destroy();
@@ -320,6 +347,102 @@ function showSinglePromptDialog(cfg) {
 	return $dialog;
 }
 //single-field prompt dialog related items (end)
+
+//new roster prompt dialog related items
+function showNewRosterPromptDialog(cfg, initialValues) {
+	var $dlg = $("#newRosterPromptDialog");
+	var $formId = "newRosterPromptForm";
+	
+	var $dialog = showModal({
+		title: cfg.title || getResource("dialog.prompt"),
+		width: cfg.width || 400,
+		content: $dlg.children(),
+		onShown: function(dlg, e) {
+			var $form = $("#"+$formId, dlg);
+			$form.removeData("valid");
+			
+			var $name = $("#new-roster-prompt-name", $form), $select = $("#new-roster-prompt-tag", $form);
+			if ($select) {
+				$select.empty();
+				var now = new Date(), y = now.getFullYear(), m = now.getMonth();
+				$select.append("<option value='"+y+"' selected>"+y+"</option>");
+				if (m >= 10) {
+					$select.append("<option value='"+(y+1)+"' selected>"+(y+1)+"</option>");
+				}
+			}
+		},
+		onOk:  function(dlg, e) {
+			var $form = $("#"+$formId, dlg);
+			if ($form && $form.data('formValidation')) {
+				if($form.data('formValidation').validate().isValid()) {
+					$form.data("valid", true);
+					var $name = $("#new-roster-prompt-name", $form), $tag = $("#new-roster-prompt-tag", $form);
+					if (cfg.onOk) cfg.onOk(dlg, {name: $name, tag: $tag});
+					return;
+				}
+			}
+			$form.data("valid", false);
+			return { canceled : true };
+		},
+		onCancel: function(dlg, e) {
+			var $form = $("#"+$formId, dlg);
+			$form.data("valid", false);
+			if (cfg.onCancel) cfg.onCancel(dlg, $form);
+		},
+		onClose: function(parent, e) {
+			var $form = $("#"+$formId, parent);	
+			var $name = $("#new-roster-prompt-name", $form), $tag = $("#new-roster-prompt-tag", $form);
+			if (cfg.onClose) cfg.onClose(parent, {valid: $form.data("valid"), name: $name, tag: $tag});
+			
+			if ($form && $form.data('formValidation')) {				
+				$form.data('formValidation').resetForm(true).destroy();
+			}
+		}
+	});
+	
+	$("#"+$formId, $dialog).formValidation({
+		framework: 'bootstrap',
+        icon: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            "newRosterPromptName": {
+                validators: {
+                    notEmpty: {
+                        message: getResource("dialog.promptRequired")
+                    },
+                    callback: {
+                    	message: getResource("histroyTab.dialog.mustUniqueName"),
+                    	callback: function(value, validator, $field) {
+                    		var $form = $("#"+$formId, $dialog);	
+                    		var $tag = $("#new-roster-prompt-tag", $form);
+                    		return !checkRosterExists(value, $tag.val());
+                    	}
+                    }
+                }
+            },
+        	"newRosterPromptTag": {
+                validators: {
+                    notEmpty: {
+                        message: getResource("dialog.promptRequired")
+                    }
+                }
+        	}
+        }
+	});
+	
+	if (initialValues) {
+		var $form = $("#"+$formId, $dialog);
+		var $name = $("#new-roster-prompt-name", $form), $tag = $("#new-roster-prompt-tag", $form);
+		if (initialValues.name) $name.val(initialValues.name);
+		if (initialValues.tag) $tag.val(initialValues.tag);
+	}
+	
+	return $dialog;
+}
+//new roster prompt dialog related items (end)
 
 //image file import handler related items
 function handler4AddPicture(file, action) {
@@ -506,6 +629,10 @@ function exportToExcel() {
 //roster histroy tree related items
 var histroyTreeObjId = "roster-histroy-tree-container";
 
+function getHistroyTreeObj() {
+	return $.fn.zTree.getZTreeObj(histroyTreeObjId);
+}
+
 function initZtreeNodes() {
 	
     //隐藏菜单
@@ -516,14 +643,14 @@ function initZtreeNodes() {
     
     //节点点击事件
     function onClickNode(e, treeId, treeNode) {
-        var zTree = $.fn.zTree.getZTreeObj(histroyTreeObjId);
+        var zTree = getHistroyTreeObj();
         zTree.checkNode(treeNode, !treeNode.checked, null, true);
         return false;
     }
 
     //节点选择事件
     function onCheck(e, treeId, treeNode) {
-        var zTree = $.fn.zTree.getZTreeObj(histroyTreeObjId),
+        var zTree = getHistroyTreeObj();
         nodes = zTree.getCheckedNodes(true),
         v = "";
         var parentid = "";
@@ -552,7 +679,10 @@ function initZtreeNodes() {
             radioType: "all"
         },
         view: {
-            dblClickExpand: false
+            dblClickExpand: false,
+            showIcon: true,
+            showLine: true,
+            showTitle: true
         },
         data: {
             simpleData: {
@@ -565,55 +695,64 @@ function initZtreeNodes() {
         },
         edit: {
             enable: true,
-            showRenameBtn: true,
+            showRenameBtn: false,
             showRemoveBtn: false
         }
     };
 
-    var zNodes = [
-        { id: 1, pId: 0, name: "父节点1", open: true },
-        { id: 11, pId: 1, name: "父节点11" },
-        { id: 111, pId: 11, name: "叶子节点111" },
-        { id: 112, pId: 11, name: "叶子节点112" },
-        { id: 113, pId: 11, name: "叶子节点113" },
-        { id: 114, pId: 11, name: "叶子节点114" },
-        { id: 12, pId: 1, name: "父节点12" },
-        { id: 121, pId: 12, name: "叶子节点121" },
-        { id: 122, pId: 12, name: "叶子节点122" },
-        { id: 123, pId: 12, name: "叶子节点123" },
-        { id: 124, pId: 12, name: "叶子节点124" },
-        { id: 13, pId: 1, name: "父节点13", isParent: true },
-        { id: 2, pId: 0, name: "父节点2" },
-        { id: 21, pId: 2, name: "父节点21", open: true },
-        { id: 211, pId: 21, name: "叶子节点211" },
-        { id: 212, pId: 21, name: "叶子节点212" },
-        { id: 213, pId: 21, name: "叶子节点213" },
-        { id: 214, pId: 21, name: "叶子节点214" },
-        { id: 22, pId: 2, name: "父节点22" },
-        { id: 221, pId: 22, name: "叶子节点221" },
-        { id: 222, pId: 22, name: "叶子节点222" },
-        { id: 223, pId: 22, name: "叶子节点223" },
-        { id: 224, pId: 22, name: "叶子节点224" },
-        { id: 23, pId: 2, name: "父节点23" },
-        { id: 231, pId: 23, name: "叶子节点231" },
-        { id: 232, pId: 23, name: "叶子节点232" },
-        { id: 233, pId: 23, name: "叶子节点233" },
-        { id: 234, pId: 23, name: "叶子节点234" },
-        { id: 3, pId: 0, name: "父节点3", isParent: true }
-    ];
-
+    $.getJSON(AppEnv.contextPath+"/excel/history/tree", function(data, status, xhr) {
+    	var zNodes = data; 
+        $.fn.zTree.init($("#"+histroyTreeObjId), setting, zNodes);
+    });
     
-    $.fn.zTree.init($("#"+histroyTreeObjId), setting, zNodes);
 }
 
 function checkHistroyTreeNodeSelected() {
-	var zTree = $.fn.zTree.getZTreeObj(histroyTreeObjId),
-    nodes = zTree.getCheckedNodes(true);
+	var zTree = getHistroyTreeObj(),
+    	nodes = zTree.getCheckedNodes(true);
 
 	if (!nodes || nodes.length <= 0 || nodes[0].isParent) {
 		return false;
 	}
 	return true;	
+}
+
+function checkRosterExists(name ,tag) {
+	var zTree = getHistroyTreeObj();
+	var parentNodes = zTree.getNodesByParam("id", tag, null);	
+	if (parentNodes && parentNodes.length > 0) {
+		for(var i=0; i<parentNodes.length; i++) {
+			var childNodes = zTree.getNodesByParam("name", name, parentNodes[i]);
+			if (childNodes && childNodes.length > 0) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+function removeAllTransientNodes() {
+	var zTree = getHistroyTreeObj();
+	var nodes = zTree.getNodesByParam("transient", true, null);	
+	for(var i=0; i<nodes.length; i++) {
+		zTree.removeNode(nodes[i]);
+	}
+}
+
+function appendNewRoster(name, tag, clearTransient) {
+	var zTree = getHistroyTreeObj();
+	if (clearTransient === true || clearTransient === 'true') {
+		//removeAllTransientNodes();
+	}
+	
+	var parentNodes = zTree.getNodesByParam("id", tag, null);	
+	if (!parentNodes || parentNodes.length <= 0) {
+		parentNodes = zTree.addNodes(null, 0, {"id":tag,"name":tag,"isParent":true,"open":true}, true);
+	}
+	var pNode = parentNodes[0];	
+	var newNodes = zTree.addNodes(pNode, 0, {"id":"","name":name,"isParent":false,"open":true, "transient": true}, true);
+	zTree.expandNode(pNode, true, true, true);
+	return newNodes;
 }
 //roster histroy tree related items (end)
 

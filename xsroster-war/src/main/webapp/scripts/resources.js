@@ -38,7 +38,8 @@ var uiResource = {
                 importJson: "导入JSON",
                 importFile: "导入Excel",
         	},
-        	xlsxFileRequired: "请选择【xlsx】格式的Excel文件！"
+        	xlsxFileRequired: "请选择【xlsx】格式的Excel文件！",
+        	remindSaveCurrentEdit: "注意，导入Excel文件将丢弃对当前排班计划的所有更改！确定继续导入Excel文件吗？"
         },
         insertTable: "插入表格",
         insertPicture: "插入图片",
@@ -71,7 +72,12 @@ var uiResource = {
             title: "Undo"
         },
         newexcel : {
-        	tempname: "新建排班计划"
+        	tempname: "新建排班计划",
+        	prompt: {
+        		nameLabel: "名称",
+        		tagLabel: "标签",
+        		title: "补充排班计划信息"
+        	}
         }
     },
     tabs: {
@@ -94,7 +100,9 @@ var uiResource = {
             copyButtonTitle: "复制创建排班计划"
         },
         dialog: {
-        	mustSelectOne: "请先选中一个排班计划！"
+        	mustSelectOne: "请先选中一个排班计划！",
+        	mustUniqueName: "名称已被使用，请使用新的名称！",
+        	remindSaveCurrentEdit: "注意，创建新的排班计划将丢弃对当前排班计划的所有更改！确定继续创建新的排班计划吗？"
         }
     },
     spreadTab: {
@@ -1377,9 +1385,9 @@ var uiResource = {
         cancel: "取消",
         yes: "是",
         no: "否",
-        confirm: "确认框",
-        alert: "提示框",
-        prompt: "输入框",
+        confirm: "确认",
+        alert: "提示",
+        prompt: "输入",
         waitingNow: "请稍候...",
         promptRequired: "该输入项必填！"
     },
