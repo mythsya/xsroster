@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>mylog.txt</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>mylog-%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
+			<maxFileSize>10MB</maxFileSize>
+			<maxHistory>60</maxHistory>
+			<totalSizeCap>600MB</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      		<level>DEBUG</level>
+    	</filter>
+	</appender>
+	
+	<logger name="org.springframework" level="WARN"/>
+  	<logger name="org.springframework.remoting" level="WARN"/>
+  	<logger name="org.springframework.scheduling.quartz" level="WARN"/>
+  	<logger name="org.springframework.data.jpa" level="DEBUG"/>
+  	<logger name="org.cometd" level="WARN"/>
+  	<logger name="ch.qos.logback" level="WARN"/>
+ 	<logger name="org.xsris.addons.xsroster" level="DEBUG"/>
+	
+	<root level="WARN">
+		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="ROLLING"/>
+	</root>
+</configuration>

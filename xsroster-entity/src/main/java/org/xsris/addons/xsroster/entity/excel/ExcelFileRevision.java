@@ -23,7 +23,7 @@ public class ExcelFileRevision extends TrackableEntity {
 	private static final long serialVersionUID = -4863017013391827435L;
 
 	private String name;
-	private String tagName;
+	private String snapshot;
 	private ExcelFile excelFile;
 	private byte[] excelContent;
 	private String jsonContent;
@@ -55,7 +55,7 @@ public class ExcelFileRevision extends TrackableEntity {
 		return name;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "excelFileRevision")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "excelFileRevision")
 	public Set<ExcelFileRevisionOutput> getOutputs() {
 		return outputs;
 	}
@@ -65,9 +65,9 @@ public class ExcelFileRevision extends TrackableEntity {
 		return published;
 	}
 
-	@Column(name = "TAG_NAME")
-	public String getTagName() {
-		return tagName;
+	@Column(name = "SNAPSHOT_NAME", length = 100)
+	public String getSnapshot() {
+		return snapshot;
 	}
 
 	public void setExcelContent(byte[] excelContent) {
@@ -94,8 +94,8 @@ public class ExcelFileRevision extends TrackableEntity {
 		this.published = published;
 	}
 
-	public void setTagName(String tagName) {
-		this.tagName = tagName;
+	public void setSnapshot(String snapshot) {
+		this.snapshot = snapshot;
 	}
 
 }

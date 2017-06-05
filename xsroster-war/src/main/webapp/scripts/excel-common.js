@@ -707,6 +707,13 @@ function initZtreeNodes() {
     
 }
 
+function getSelectedHistroyTreeNodes() {
+	var zTree = getHistroyTreeObj(),
+	nodes = zTree.getCheckedNodes(true);
+	
+	return nodes;
+}
+
 function checkHistroyTreeNodeSelected() {
 	var zTree = getHistroyTreeObj(),
     	nodes = zTree.getCheckedNodes(true);
@@ -826,3 +833,22 @@ function toggleInspector() {
     spread.refresh();
 }
 //inspector related items (end)
+
+//roster related items
+function doOpenRosterById(id, callback) {
+	$.ajax({
+		url: AppEnv.contextPath+"/excel/open",
+		type: 'POST',
+		data: {id: id},
+		dataType: 'json',
+		cache: false,
+		processData: true,		    		
+		success: function(data, status, xhr) {
+			if (callback) callback(data, status, xhr);
+		}, 
+		error: function(xhr, msg, e) {
+			alert(msg);
+		}
+	});
+}
+//roster related items (end)

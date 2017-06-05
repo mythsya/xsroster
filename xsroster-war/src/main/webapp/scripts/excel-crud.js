@@ -221,6 +221,29 @@ function openSelectedRoster(e, $self) {
         });
 		return false;
 	}
+	
+	showConfirmDialog({
+		message: getResource("histroyTab.dialog.remindSaveCurrentEdit"),
+		onClose: function(parent, confirmed) {
+			if (confirmed === true) {
+				var checked = getSelectedHistroyTreeNodes(),
+					nodeId = checked[0].id;
+				doOpenRosterById(nodeId, function(data, status, xhr) {
+					
+					if (status == 'success' && data.id) {
+						var spreadJson = JSON.parse(data.content);
+					    importJson(spreadJson);
+					    valCurrentRosterId(data.id);
+						valCurrentRosterTag(data.tag);
+						valCurrentRosterName(data.name, true);
+					} else {
+						alert("Can not load excel file!");
+					}
+					
+				});
+			}
+		}
+	});
 }
 
 function delSelectedRoster(e, $self) {

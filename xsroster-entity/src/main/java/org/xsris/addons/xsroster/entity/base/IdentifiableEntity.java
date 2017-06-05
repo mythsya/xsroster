@@ -22,7 +22,7 @@ public abstract class IdentifiableEntity implements Serializable {
 	protected String id;
 
 	@Id
-	@Column(name = "id", length = 32)
+	@Column(name = "id", length = 36)
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "org.hibernate.id.UUIDGenerator", parameters = {
 			@Parameter(name = "uuid_gen_strategy_class", value = "org.hibernate.id.uuid.CustomVersionOneStrategy") })

@@ -1,45 +1,99 @@
 package org.xsris.addons.xsroster.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.xsris.addons.xsroster.entity.excel.ExcelFile;
+import org.xsris.addons.xsroster.entity.excel.ExcelFileRevision;
+import org.xsris.addons.xsroster.service.ExcelFileService;
+import org.xsris.addons.xsroster.web.view.ExcelView;
+import org.xsris.addons.xsroster.web.view.JsonResult;
 import org.xsris.addons.xsroster.web.view.TreeNode;
 
 @Controller
 @RequestMapping("/excel")
 public class ExcelController {
 
+	@Autowired
+	private ExcelFileService excelFileService;
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
 	@ResponseBody
 	@RequestMapping("history/tree")
-	public List<TreeNode> listHistoryTree() {
-		TreeNode node1 = TreeNode.buildParentNode("1", "2017", true);
-		TreeNode node11 = TreeNode.buildLeafNode("11", "放射科3月6-3月12日排班表", false);
-		TreeNode node12 = TreeNode.buildLeafNode("12", "放射科4月1-4月7日排班表", false);
-		node1.getChildren().add(node11);
-		node1.getChildren().add(node12);
+	public List<TreeNode> listHistoryTree(@RequestParam(name = "validOnly", required = false) Boolean validOnly) {
 
-		TreeNode node2 = TreeNode.buildParentNode("2", "2016", true);
-		TreeNode node21 = TreeNode.buildLeafNode("21", "放射科3月6-3月12日排班表", false);
-		TreeNode node22 = TreeNode.buildLeafNode("22", "放射科4月1-4月7日排班表", false);
-		node2.getChildren().add(node21);
-		node2.getChildren().add(node22);
+		boolean showValidOnly = ((validOnly != null) && (validOnly == true));
+		List<ExcelFile> files = excelFileService.listAllExcelFiles(showValidOnly);
+
+		DateTime now = DateTime.now();
+		String y = String.valueOf(now.getYear());
 
 		List<TreeNode> list = new ArrayList<TreeNode>();
-		list.add(node1);
-		list.add(node2);
+		Map<String, TreeNode> parentNodes = new HashMap<String, TreeNode>();
+		if ((files != null) && !files.isEmpty()) {
+			for (ExcelFile file : files) {
+				TreeNode pNode = parentNodes.get(file.getTag());
+				if (pNode == null) {
+					pNode = TreeNode.buildParentNode(file.getTag(), file.getTag(), true);
+					parentNodes.put(file.getTag(), pNode);
+					list.add(pNode);
+				}
+				TreeNode child = TreeNode.buildLeafNode(file.getId(), file.getName(), false);
+				pNode.getChildren().add(child);
+			}
+		}
+
+		if (!parentNodes.containsKey(y)) {
+			TreeNode pNode = TreeNode.buildParentNode(y, y, true);
+			list.add(0, pNode);
+		}
+
 		return list;
 	}
 
-	@RequestMapping("save")
-	public String save(@RequestParam(name = "id", required = false) String id, @RequestParam("name") String name,
-			@RequestParam("jsonCotent") String jsonCotent, @RequestParam("xlsxContent") MultipartFile xlsxContent,
-			@RequestParam("path") String path) {
+	@ResponseBody
+	@RequestMapping("open")
+	public ExcelView openExcel(@RequestParam(name = "id") String id) {
+		ExcelView view = new ExcelView();
+		ExcelFile file = excelFileService.openExcel(id);
+		if (file != null) {
+			view.setId(file.getId());
+			view.setName(file.getName());
+			view.setTag(file.getTag());
 
-		return "/success";
+			ExcelFileRevision rev = file.getCurrentRevision();
+			view.setRevisionId(rev.getId());
+			view.setContent(rev.getJsonContent());
+		}
+		return view;
+	}
+
+	@ResponseBody
+	@RequestMapping("save")
+	public JsonResult save(@RequestParam(name = "id", required = false) String id, @RequestParam("name") String name,
+			@RequestParam("tag") String tag, @RequestParam("path") String path,
+			@RequestParam("jsonCotent") String jsonCotent, @RequestParam("xlsxContent") MultipartFile xlsxContent) {
+
+		byte[] excelContent;
+		try {
+			excelContent = xlsxContent.getBytes();
+			ExcelFile file = excelFileService.saveExcel(id, name, tag, path, excelContent, jsonCotent);
+			return JsonResult.success(file.getId(), file.getName());
+		} catch (Exception e) {
+			logger.error("Failed to save excel file , caused by ", e);
+			return JsonResult.error("1", "Failed to save excel file , caused by " + e.getMessage(), e);
+		}
 	}
 }

@@ -1,8 +1,14 @@
 package org.xsris.addons.xsroster.entity.excel;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -32,9 +38,10 @@ public class ExcelFile extends OptimisticLockingTrackableEntity {
 	private Identity owner;
 	private PermissionSet permissionSet;
 	private String tag;
+	private Set<ExcelFileRevision> revisions = new HashSet<ExcelFileRevision>();
 
-	@OneToOne
-	@JoinColumn(name = "CURRENT_REVISION", nullable = false)
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "CURRENT_REVISION", nullable = true)
 	public ExcelFileRevision getCurrentRevision() {
 		return currentRevision;
 	}
@@ -62,11 +69,17 @@ public class ExcelFile extends OptimisticLockingTrackableEntity {
 		return permissionSet;
 	}
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "excelFile")
+	public Set<ExcelFileRevision> getRevisions() {
+		return revisions;
+	}
+
 	@Column(name = "TAG", length = 50)
 	public String getTag() {
 		return tag;
 	}
 
+	@Column(name = "VALID")
 	public Boolean getValid() {
 		return valid;
 	}
@@ -85,6 +98,10 @@ public class ExcelFile extends OptimisticLockingTrackableEntity {
 
 	public void setPermissionSet(PermissionSet permissionSet) {
 		this.permissionSet = permissionSet;
+	}
+
+	public void setRevisions(Set<ExcelFileRevision> revisions) {
+		this.revisions = revisions;
 	}
 
 	public void setTag(String tag) {
