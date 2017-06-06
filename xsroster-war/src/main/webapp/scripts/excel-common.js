@@ -757,7 +757,7 @@ function appendNewRoster(name, tag, clearTransient) {
 		parentNodes = zTree.addNodes(null, 0, {"id":tag,"name":tag,"isParent":true,"open":true}, true);
 	}
 	var pNode = parentNodes[0];	
-	var newNodes = zTree.addNodes(pNode, 0, {"id":"","name":name,"isParent":false,"open":true, "transient": true}, true);
+	var newNodes = zTree.addNodes(pNode, 0, {"id":"","name":name,"isParent":false,"open":true, "transient": true, "iconSkin":"transient"}, true);
 	zTree.expandNode(pNode, true, true, true);
 	return newNodes;
 }

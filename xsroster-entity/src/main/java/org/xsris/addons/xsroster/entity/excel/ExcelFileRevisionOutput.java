@@ -41,7 +41,7 @@ public class ExcelFileRevisionOutput extends TrackableEntity {
 	}
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "DATA_FORMAT")
+	@Column(name = "DATA_FORMAT", length = 20)
 	public OutputFormat getFormat() {
 		return format;
 	}

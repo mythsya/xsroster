@@ -166,7 +166,12 @@ function saveCurrentRoster(e, $self) {
 	    		contentType: false,
 	    		success: function(data, status) {
 	    			$dlg.modal("hide");
-	    			initZtreeNodes();	    			
+	    			initZtreeNodes();
+	    			if (data.status == 'success') {
+	    				alert(getResource("toolBar.save.dialog.success"));
+	    			} else {
+	    				alert(getResource("toolBar.save.dialog.failure"));
+	    			}
 	    		}, 
 	    		error: function(xhr, msg, e) {
 	    			$dlg.modal("hide");
@@ -200,10 +205,50 @@ function saveCurrentRoster(e, $self) {
 }
 
 function publishCurrentRoster(e, $self) {
-	showConfirmDialog({		
+	function doPublish() {
+		var $dlg = showProgressDialog({
+			width: 400,
+			onClose: function() {}
+		});
+	    	
+    	$.ajax({
+    		url: AppEnv.contextPath+"/excel/publish",
+    		type: 'POST',
+    		data: { id : valCurrentRosterId()},
+    		cache: false,
+    		processData: true,	    		
+    		success: function(data, status, xhr) {
+    			$dlg.modal("hide");
+    			if (data.status == 'success') {
+    				alert(getResource("toolBar.publish.dialog.success"));
+    			} else {
+    				alert(getResource("toolBar.publish.dialog.failure"));
+    			}
+    		}, 
+    		error: function(xhr, msg, e) {
+    			$dlg.modal("hide");
+    			alert(msg);
+    		}
+    	});
+
+	}
+	
+	if(!valCurrentRosterId()) {
+		showAlertDialog({
+        	message: getResource("toolBar.publish.dialog.noValidRoster")
+        });
+		return false;
+	}
+	
+	showConfirmDialog({
 		width: 400,
-		message: getResource("toolBar.publish.confirmMessage"),
-		buttonsYESNO: true
+		message: getResource("toolBar.publish.dialog.confirmPublish"),
+		buttonsYESNO: true,
+		onClose: function(parent, confirmed) {
+			if (confirmed === true || confirmed === 'true') {
+				doPublish();
+			}
+		}
 	});
 }
 
@@ -255,7 +300,7 @@ function delSelectedRoster(e, $self) {
 	}
 }
 
-function doCreateNewRoster($self, callback) {
+function doCreateNewRoster($self, callback, initialValues) {
 	showConfirmDialog({
 		message: getResource("histroyTab.dialog.remindSaveCurrentEdit"),
 		onClose: function(parent, confirmed) {
@@ -274,7 +319,7 @@ function doCreateNewRoster($self, callback) {
 							callback(name, tag);
 						}
 					}
-				});	
+				}, initialValues);	
 			}
 		}
 	});
@@ -296,10 +341,19 @@ function copyCreateNewRoster(e, $self) {
         });
 		return false;
 	}
-	
+	var selected = getSelectedHistroyTreeNodes();
+	var nodeId = selected[0].id, nodeName = selected[0].name;
 	doCreateNewRoster($self, function(name, tag) {
-		valCurrentRosterId("");
-	});
+		doOpenRosterById(nodeId, function(data, status, xhr) {
+			if (status == 'success' && data.id) {
+				var spreadJson = JSON.parse(data.content);
+			    importJson(spreadJson);
+			    valCurrentRosterId("");
+			} else {
+				alert("Can not load excel file!");
+			}
+		});
+	}, {name: nodeName+"_copy"});
 }
 
 

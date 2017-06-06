@@ -6175,14 +6175,16 @@ function processContextMenuClicked() {
                 var sheetCount = spread.getSheetCount();
                 var activeIndex = spread.getActiveSheetIndex();
                 if (activeIndex >= 0) {
-                    var CONFIRM_DIALOG_WIDTH = 500;                    
-                    showConfirmDialog({
-                    	title: uiResource.dialog.confirm, 
-                    	width: CONFIRM_DIALOG_WIDTH,                    	
-                    	onOk: function() {
-                            spread.removeSheet(activeIndex);
-                        }
-                    });   
+                	showConfirmDialog({
+                		width: 400,
+                		message: getResource("contextMenu.dialog.confirmRemoveSheet"),
+                		buttonsYESNO: true,
+                		onClose: function(parent, confirmed) {
+                			if (confirmed === true || confirmed === 'true') {
+                				spread.removeSheet(activeIndex);
+                			}
+                		}
+                	});
                 }
             }
             break;

@@ -55,7 +55,7 @@ public class ExcelFileRevision extends TrackableEntity {
 		return name;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "excelFileRevision")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "excelFileRevision", orphanRemoval = true)
 	public Set<ExcelFileRevisionOutput> getOutputs() {
 		return outputs;
 	}

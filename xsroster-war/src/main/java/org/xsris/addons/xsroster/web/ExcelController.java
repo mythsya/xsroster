@@ -1,10 +1,14 @@
 package org.xsris.addons.xsroster.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +20,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.xsris.addons.xsroster.entity.excel.ExcelFile;
 import org.xsris.addons.xsroster.entity.excel.ExcelFileRevision;
+import org.xsris.addons.xsroster.entity.excel.ExcelFileRevisionOutput;
+import org.xsris.addons.xsroster.entity.metadata.OutputFormat;
 import org.xsris.addons.xsroster.service.ExcelFileService;
 import org.xsris.addons.xsroster.web.view.ExcelView;
 import org.xsris.addons.xsroster.web.view.JsonResult;
 import org.xsris.addons.xsroster.web.view.TreeNode;
+
+import com.aspose.cells.ImageOrPrintOptions;
+import com.aspose.cells.SaveFormat;
+import com.aspose.cells.SheetRender;
+import com.aspose.cells.Workbook;
+import com.aspose.cells.Worksheet;
 
 @Controller
 @RequestMapping("/excel")
@@ -78,6 +90,68 @@ public class ExcelController {
 			view.setContent(rev.getJsonContent());
 		}
 		return view;
+	}
+
+	@ResponseBody
+	@RequestMapping("publish")
+	public JsonResult publish(@RequestParam(name = "id") String id) {
+		List<ExcelFileRevisionOutput> outputs = new ArrayList<ExcelFileRevisionOutput>();
+		ExcelFile file = excelFileService.openExcel(id);
+		if (file != null) {
+			ExcelFileRevision rev = file.getCurrentRevision();
+			byte[] excelData = rev.getExcelContent();
+			InputStream ins = null;
+			try {
+				ins = new ByteArrayInputStream(excelData);
+				Workbook workbook = new Workbook(ins);
+
+				ImageOrPrintOptions imgOptions = new ImageOrPrintOptions();
+				imgOptions.setSaveFormat(SaveFormat.SVG);
+				imgOptions.setOnePagePerSheet(true);
+
+				int sheetCount = workbook.getWorksheets().getCount();
+				for (int i = 0; i < sheetCount; i++) {
+					Worksheet sheet = workbook.getWorksheets().get(i);
+					SheetRender sr = new SheetRender(sheet, imgOptions);
+
+					for (int k = 0; k < sr.getPageCount(); k++) {
+						ByteArrayOutputStream out = new ByteArrayOutputStream();
+						try {
+							sr.toImage(k, out);
+							byte[] svgData = out.toByteArray();
+							ExcelFileRevisionOutput revOut = new ExcelFileRevisionOutput();
+							revOut.setSheetIndex(i);
+							revOut.setData(svgData);
+							revOut.setSheetName(sheet.getName());
+							revOut.setFormat(OutputFormat.SVG);
+							outputs.add(revOut);
+						} finally {
+							if (out != null) {
+								IOUtils.closeQuietly(out);
+							}
+						}
+					}
+				}
+
+				boolean result = excelFileService.publish(id, outputs);
+				if (result) {
+					return JsonResult.success(id, "");
+				} else {
+					return JsonResult.error(id, "Failed to publish the roster, caused by unexpected exception!");
+				}
+
+			} catch (Exception e) {
+				logger.error("Failed to export excel file to svg files , caused by ", e);
+				return JsonResult.error("1", "Failed to export excel file to svg files , caused by " + e.getMessage(),
+						e);
+			} finally {
+				if (ins != null) {
+					IOUtils.closeQuietly(ins);
+				}
+			}
+		}
+
+		return JsonResult.error("99", "Failed to publish excel file , caused by empty excel content !");
 	}
 
 	@ResponseBody

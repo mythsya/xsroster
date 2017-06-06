@@ -55,11 +55,20 @@ var uiResource = {
         	title: "保存",
         	prompt: {
         		title: "输入排班计划名称"
+        	},
+        	dialog: {
+        		success: "排班计划已保存成功！",
+        		failure: "排班计划保存失败！"
         	}
         },
         publish: {
         	title: "发布",
-        	confirmMessage: "请再次确认是否发布当前的排班计划？"
+        	dialog: {
+        		confirmPublish: "请确认是否发布当前的排班计划？",
+        		noValidRoster: "当前没有可供发布的排班计划！请先打开已有的排班计划或创建新的排班计划。",
+        		success: "排班计划已发布成功！",
+        		failure: "排班计划发布失败！"
+        	}
         },
         tag: {
         	title: "标记版本",
@@ -1375,10 +1384,10 @@ var uiResource = {
         insertItem: "插入",
         deleteItem: "删除",
         mergeItem: "合并",
-        unmergeItem: "取消合并"
-    },
-    removeSheetDialog: {
-        confirmTitle: "请再次确认是否移除工作表？"
+        unmergeItem: "取消合并",
+        dialog: {
+        	confirmRemoveSheet: "请确认是否移除工作表？"
+        }
     },
     dialog: {
         ok: "确定",

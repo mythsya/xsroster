@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.xsris.addons.xsroster.entity.excel.ExcelFile;
 import org.xsris.addons.xsroster.entity.excel.ExcelFileRevision;
+import org.xsris.addons.xsroster.entity.excel.ExcelFileRevisionOutput;
 import org.xsris.addons.xsroster.repository.ExcelFileRepository;
 import org.xsris.addons.xsroster.repository.ExcelFileRevisionRepository;
 
@@ -51,6 +52,36 @@ public class ExcelFileServiceImpl implements ExcelFileService {
 			return file;
 		}
 		return null;
+	}
+
+	@Transactional
+	@Override
+	public boolean publish(String id, List<ExcelFileRevisionOutput> outputs) {
+		if (StringUtils.isNotEmpty(id) && (outputs != null) && !outputs.isEmpty()) {
+			ExcelFile file = excelFileRepository.findOne(id);
+			if (file != null) {
+				ExcelFileRevision rev = excelFileRevisionRepository.findOne(file.getCurrentRevision().getId());
+				Assert.notNull(rev, "ExcelFileRevision can not be null in case ExcelFile is not null !");
+
+				DateTime now = DateTime.now();
+
+				for (ExcelFileRevisionOutput output : outputs) {
+					output.setId(null);
+					output.setCreatedWhen(now);
+					output.setExcelFileRevision(rev);
+				}
+
+				rev.getOutputs().clear();
+				rev.getOutputs().addAll(outputs);
+				rev.setPublished(true);
+				rev.setModifiedWhen(now);
+
+				excelFileRevisionRepository.save(rev);
+
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Transactional
