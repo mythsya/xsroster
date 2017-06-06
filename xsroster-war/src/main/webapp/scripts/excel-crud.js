@@ -12,16 +12,7 @@ $(document).ready(function() {
     	importExistingExcel(e, $(this));
     });
 	
-    fileImporterHandlers["doImport"] = function(file, action)  {
-    	showConfirmDialog({
-    		message: getResource("toolBar.import.remindSaveCurrentEdit"),
-    		onClose: function(parent, confirmed) {
-    			if (confirmed === true) {
-    				handler4ImportExcel(file, action);
-    			}
-    		}
-    	}); 
-    }
+    fileImporterHandlers["doImport"] = handler4ImportExcel;
     
     $("#doCreate").click(function(e) {
     	createNewRoster(e, $(this));
@@ -100,25 +91,36 @@ function handler4ImportExcel(file, action) {
         return false;
     }
 	
-	var initName = file.name.substring(0, file.name.lastIndexOf("."));
-	showNewRosterPromptDialog({
-		width: 400,
-		title: getResource("toolBar.newexcel.prompt.title"),
-		onOk: function(dlg, fields) {
-		},
-		onClose: function(dlg, fields) {
-			var name = fields.name.val(), tag = fields.tag.val();
-			if (fields.valid===true && name && tag) {
-				importSpreadFromExcel(file);
-				valCurrentRosterId("");
-				valCurrentRosterTag(tag);
-				valCurrentRosterName(name, true);
-				appendNewRoster(name, tag, true);				
+	function doImportExcel(file, action) {
+		var initName = file.name.substring(0, file.name.lastIndexOf("."));
+		showNewRosterPromptDialog({
+			width: 400,
+			title: getResource("toolBar.newexcel.prompt.title"),
+			onOk: function(dlg, fields) {
+			},
+			onClose: function(dlg, fields) {
+				var name = fields.name.val(), tag = fields.tag.val();
+				if (fields.valid===true && name && tag) {
+					importSpreadFromExcel(file);
+					valCurrentRosterId("");
+					valCurrentRosterTag(tag);
+					valCurrentRosterName(name, true);
+					appendNewRoster(name, tag, true);				
+				}
+			}
+		}, {
+			name: initName
+		});
+	}
+	
+	showConfirmDialog({
+		message: getResource("toolBar.import.remindSaveCurrentEdit"),
+		onClose: function(parent, confirmed) {
+			if (confirmed === true) {
+				doImportExcel(file, action);
 			}
 		}
-	}, {
-		name: initName
-	});	
+	}); 
 
     return true;
 }
@@ -152,6 +154,7 @@ function saveCurrentRoster(e, $self) {
 	    			$dlg.modal("hide");
 	    			initZtreeNodes();
 	    			if (data.status == 'success') {
+	    				valCurrentRosterId(data.code);
 	    				alert(getResource("toolBar.save.dialog.success"));
 	    			} else {
 	    				alert(getResource("toolBar.save.dialog.failure"));

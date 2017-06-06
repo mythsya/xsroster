@@ -82,12 +82,12 @@
       <groupId>oracle.jdbc.driver</groupId>
       <artifactId>ojdbc6</artifactId>
     </dependency>
-    <!--
+
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
     </dependency>
-    -->
+
     <dependency>
       <groupId>com.aspose</groupId>
       <artifactId>aspose-cells</artifactId>
