@@ -9,7 +9,7 @@ public abstract class OptimisticLockingTrackableEntity extends TrackableEntity {
 
 	private static final long serialVersionUID = 811264831172380336L;
 
-	private Long version = 0L;
+	private Long version;
 
 	@Version
 	@Column(precision = 38, scale = 0)
