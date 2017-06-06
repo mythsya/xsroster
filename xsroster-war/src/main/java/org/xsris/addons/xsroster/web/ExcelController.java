@@ -44,10 +44,13 @@ public class ExcelController {
 
 	@ResponseBody
 	@RequestMapping("history/tree")
-	public List<TreeNode> listHistoryTree(@RequestParam(name = "validOnly", required = false) Boolean validOnly) {
+	public List<TreeNode> listHistoryTree(@RequestParam(name = "validOnly", required = false) Boolean validOnly,
+			@RequestParam(name = "publishedOnly", required = false) Boolean publishedOnly) {
 
 		boolean showValidOnly = ((validOnly != null) && (validOnly == true));
-		List<ExcelFile> files = excelFileService.listAllExcelFiles(showValidOnly);
+		boolean showPublishedOnly = ((publishedOnly != null) && (publishedOnly == true));
+
+		List<ExcelFile> files = excelFileService.listAllExcelFiles(showValidOnly, showPublishedOnly);
 
 		DateTime now = DateTime.now();
 		String y = String.valueOf(now.getYear());

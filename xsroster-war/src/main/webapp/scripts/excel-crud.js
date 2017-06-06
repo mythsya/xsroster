@@ -11,8 +11,17 @@ $(document).ready(function() {
     $("#doImport").click(function (e) {
     	importExistingExcel(e, $(this));
     });
-    
-    fileImporterHandlers["doImport"] = handler4ImportExcel;
+	
+    fileImporterHandlers["doImport"] = function(file, action)  {
+    	showConfirmDialog({
+    		message: getResource("toolBar.import.remindSaveCurrentEdit"),
+    		onClose: function(parent, confirmed) {
+    			if (confirmed === true) {
+    				handler4ImportExcel(file, action);
+    			}
+    		}
+    	}); 
+    }
     
     $("#doCreate").click(function(e) {
     	createNewRoster(e, $(this));
@@ -47,24 +56,6 @@ $(document).ready(function() {
 	});
 });
 
-function valCurrentRosterId(v) {
-	return setOrGetValue($("#current_roster_id"), v);
-}
-
-function valCurrentRosterTag(v) {
-	return setOrGetValue($("#current_roster_tag"), v);
-}
-
-function valCurrentRosterName(v, forceSync) {
-	var v2 = setOrGetValue($("#current_roster_name"), v);
-	
-	if (forceSync === true || forceSync === 'true') {
-		$("#current_roster_name_lbl").text(v2);
-	}
-	
-	return v2;
-}
-
 function editCurrentRosterName(e, $self) {
 	var oldval = $self.text();
 	var tmpEditId = "current_roster_name_lbl_tmp_edit";
@@ -97,15 +88,8 @@ function editCurrentRosterName(e, $self) {
 }
 
 function importExistingExcel(e, $self) {	
-	showConfirmDialog({
-		message: getResource("toolBar.import.remindSaveCurrentEdit"),
-		onClose: function(parent, confirmed) {
-			if (confirmed === true) {
-				$("#fileSelector").data("action", $self.attr("id"));
-			    $("#fileSelector").click();
-			}
-		}
-	});
+	$("#fileSelector").data("action", $self.attr("id"));				
+    $("#fileSelector").click();
 }
 
 function handler4ImportExcel(file, action) {

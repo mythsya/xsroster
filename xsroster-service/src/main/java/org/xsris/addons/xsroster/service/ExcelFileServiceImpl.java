@@ -29,11 +29,16 @@ public class ExcelFileServiceImpl implements ExcelFileService {
 	private ExcelFileRevisionRepository excelFileRevisionRepository;
 
 	@Override
-	public List<ExcelFile> listAllExcelFiles(boolean validOnly) {
+	public List<ExcelFile> listAllExcelFiles(boolean validOnly, boolean publishedOnly) {
 		Sort sort = new Sort(new Order(Direction.DESC, "createdWhen"), new Order(Direction.DESC, "name"));
-		if (validOnly) {
+		if (validOnly || publishedOnly) {
 			ExcelFile e = new ExcelFile();
-			e.setValid(true);
+			if (validOnly) {
+				e.setValid(true);
+			}
+			if (publishedOnly) {
+				e.setPublished(true);
+			}
 			return excelFileRepository.findAll(Example.of(e), sort);
 		} else {
 			return excelFileRepository.findAll(sort);
@@ -78,6 +83,10 @@ public class ExcelFileServiceImpl implements ExcelFileService {
 
 				excelFileRevisionRepository.save(rev);
 
+				file.setPublished(true);
+				file.setModifiedWhen(now);
+				excelFileRepository.save(file);
+
 				return true;
 			}
 		}
@@ -108,7 +117,6 @@ public class ExcelFileServiceImpl implements ExcelFileService {
 
 			rev = new ExcelFileRevision();
 			rev.setCreatedWhen(now);
-			rev.setPublished(false);
 			rev.setExcelFile(file);
 
 			file.getRevisions().add(rev);
@@ -118,13 +126,14 @@ public class ExcelFileServiceImpl implements ExcelFileService {
 
 			rev.setModifiedWhen(now);
 		}
-
+		rev.setPublished(false);
 		rev.setName(name);
 		rev.setJsonContent(jsonContent);
 		rev.setExcelContent(excelContent);
 
 		file.setName(name);
 		file.setTag(tag);
+		file.setPublished(false);
 		excelFileRepository.save(file);
 
 		return file;

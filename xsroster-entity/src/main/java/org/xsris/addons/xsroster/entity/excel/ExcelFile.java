@@ -38,6 +38,7 @@ public class ExcelFile extends OptimisticLockingTrackableEntity {
 	private Identity owner;
 	private PermissionSet permissionSet;
 	private String tag;
+	private Boolean published = false;
 	private Set<ExcelFileRevision> revisions = new HashSet<ExcelFileRevision>();
 
 	@OneToOne(fetch = FetchType.LAZY)
@@ -69,6 +70,11 @@ public class ExcelFile extends OptimisticLockingTrackableEntity {
 		return permissionSet;
 	}
 
+	@Column(name = "IS_PUBLISHED")
+	public Boolean getPublished() {
+		return published;
+	}
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "excelFile")
 	public Set<ExcelFileRevision> getRevisions() {
 		return revisions;
@@ -98,6 +104,10 @@ public class ExcelFile extends OptimisticLockingTrackableEntity {
 
 	public void setPermissionSet(PermissionSet permissionSet) {
 		this.permissionSet = permissionSet;
+	}
+
+	public void setPublished(Boolean published) {
+		this.published = published;
 	}
 
 	public void setRevisions(Set<ExcelFileRevision> revisions) {

@@ -7,7 +7,7 @@ import org.xsris.addons.xsroster.entity.excel.ExcelFileRevisionOutput;
 
 public interface ExcelFileService {
 
-	List<ExcelFile> listAllExcelFiles(boolean validOnly);
+	List<ExcelFile> listAllExcelFiles(boolean validOnly, boolean publishedOnly);
 
 	ExcelFile openExcel(String id);
 
