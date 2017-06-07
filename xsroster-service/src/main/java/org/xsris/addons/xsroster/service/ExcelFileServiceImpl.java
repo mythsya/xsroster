@@ -16,8 +16,9 @@ import org.springframework.util.Assert;
 import org.xsris.addons.xsroster.entity.excel.ExcelFile;
 import org.xsris.addons.xsroster.entity.excel.ExcelFileRevision;
 import org.xsris.addons.xsroster.entity.excel.ExcelFileRevisionOutput;
-import org.xsris.addons.xsroster.repository.ExcelFileRepository;
-import org.xsris.addons.xsroster.repository.ExcelFileRevisionRepository;
+import org.xsris.addons.xsroster.repository.excel.ExcelFileRepository;
+import org.xsris.addons.xsroster.repository.excel.ExcelFileRevisionOutputRepository;
+import org.xsris.addons.xsroster.repository.excel.ExcelFileRevisionRepository;
 
 @Component("excelFileService")
 public class ExcelFileServiceImpl implements ExcelFileService {
@@ -27,6 +28,9 @@ public class ExcelFileServiceImpl implements ExcelFileService {
 
 	@Autowired
 	private ExcelFileRevisionRepository excelFileRevisionRepository;
+
+	@Autowired
+	private ExcelFileRevisionOutputRepository excelFileRevisionOutputRepository;
 
 	@Override
 	public List<ExcelFile> listAllExcelFiles(boolean validOnly, boolean publishedOnly) {
@@ -55,6 +59,14 @@ public class ExcelFileServiceImpl implements ExcelFileService {
 				rev.getExcelContent();
 			}
 			return file;
+		}
+		return null;
+	}
+
+	@Override
+	public ExcelFileRevisionOutput openExcelOutput(String id) {
+		if (StringUtils.isNotEmpty(id)) {
+			return excelFileRevisionOutputRepository.findOne(id);
 		}
 		return null;
 	}

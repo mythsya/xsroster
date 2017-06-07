@@ -1,7 +1,7 @@
 package org.xsris.addons.xsroster.entity.excel;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.xsris.addons.xsroster.entity.base.TrackableEntity;
@@ -27,7 +28,7 @@ public class ExcelFileRevision extends TrackableEntity {
 	private ExcelFile excelFile;
 	private byte[] excelContent;
 	private String jsonContent;
-	private Set<ExcelFileRevisionOutput> outputs = new HashSet<ExcelFileRevisionOutput>();
+	private List<ExcelFileRevisionOutput> outputs = new ArrayList<ExcelFileRevisionOutput>();
 	private Boolean published = false;
 
 	@Lob
@@ -56,7 +57,8 @@ public class ExcelFileRevision extends TrackableEntity {
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "excelFileRevision", orphanRemoval = true)
-	public Set<ExcelFileRevisionOutput> getOutputs() {
+	@OrderBy("sheetIndex ASC")
+	public List<ExcelFileRevisionOutput> getOutputs() {
 		return outputs;
 	}
 
@@ -86,7 +88,7 @@ public class ExcelFileRevision extends TrackableEntity {
 		this.name = name;
 	}
 
-	public void setOutputs(Set<ExcelFileRevisionOutput> outputs) {
+	public void setOutputs(List<ExcelFileRevisionOutput> outputs) {
 		this.outputs = outputs;
 	}
 

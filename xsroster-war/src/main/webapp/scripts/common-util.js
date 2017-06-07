@@ -1,13 +1,24 @@
+var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+var isIE = navigator.userAgent.toLowerCase().indexOf('compatible') < 0 && /(trident)(?:.*? rv ([\w.]+)|)/.exec(navigator.userAgent.toLowerCase()) !== null;
+var DOWNLOAD_DIALOG_WIDTH = 300;
+
 var AppEnv = {};
+(function() {
+	function getContextPath() {
+	    var pathName = document.location.pathname;
+	    var index = pathName.substr(1).indexOf("/");
+	    var result = pathName.substr(0,index+1);
+	    return result;
+	}
 
-function getContextPath() {
-    var pathName = document.location.pathname;
-    var index = pathName.substr(1).indexOf("/");
-    var result = pathName.substr(0,index+1);
-    return result;
+	AppEnv.contextPath = getContextPath();	
+})();
+
+function resetAllInputFields() {
+	("input").each(function () {
+		$(this).val("");
+	});
 }
-
-AppEnv.contextPath = getContextPath();
 
 function setOrGetValue(o, v) {
 	if (o) {
@@ -514,3 +525,41 @@ function doOpenRosterById(id, callback) {
 	});
 }
 //roster related items (end)
+
+//file download related items
+function getFileName() {
+    function to2DigitsString(num) {
+        return ("0" + num).substr(-2);
+    }
+
+    var date = new Date();
+    return [
+        "export",
+        date.getFullYear(), to2DigitsString(date.getMonth() + 1), to2DigitsString(date.getDate()),
+        to2DigitsString(date.getHours()), to2DigitsString(date.getMinutes()), to2DigitsString(date.getSeconds())
+    ].join("");
+}
+
+function downloadExcelFile(blob, fileName) {    
+    
+    if (isSafari) {
+        var reader = new FileReader();
+        reader.onloadend = function () {                
+            showModal({
+            	title: uiResource.toolBar.downloadTitle,
+            	width: DOWNLOAD_DIALOG_WIDTH,
+            	content: $("#downloadDialog").children(),
+            	callback: function () {
+                    $("#downloadDialog").hide();
+                }
+            });
+            var link = $("#download");
+            link[0].href = reader.result;
+        };
+        reader.readAsDataURL(blob);
+    } else {
+        saveAs(blob, fileName);
+    }
+
+}
+//file download related items (end)

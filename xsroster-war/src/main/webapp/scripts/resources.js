@@ -26,6 +26,10 @@ var uiResource = {
             exportActions: {
                 exportJson: "导出JSON",
                 exportExcel: "导出Excel"
+            },
+            dialog: {
+            	noValidRoster: "当前没有可供导出的排班计划！请先打开已有的排班计划。",
+            	exportFail: "导出Excel失败！"
             }
         },
         downloadTitle: "保存文件",

@@ -6,8 +6,12 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jms.annotation.EnableJms;
+
+import com.aspose.cells.License;
 
 @SpringBootApplication
 @EntityScan(basePackages = "org.xsris.addons.xsroster.entity")
@@ -17,11 +21,27 @@ import org.springframework.jms.annotation.EnableJms;
 public class XsRosterMainAppEntry extends SpringBootServletInitializer {
 
 	public static void main(String[] args) throws Exception {
+		XsRosterMainAppEntry.validateLicense();
 		SpringApplication.run(XsRosterMainAppEntry.class, args);
+	}
+
+	private static void validateLicense() {
+		try {
+			License lic = new License();
+			Resource licenseXml = new ClassPathResource("license.xml");
+			lic.setLicense(licenseXml.getInputStream());
+
+			if (License.isLicenseSet()) {
+				System.out.println("License is valid !");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		XsRosterMainAppEntry.validateLicense();
 		return application.sources(XsRosterMainAppEntry.class);
 	}
 }

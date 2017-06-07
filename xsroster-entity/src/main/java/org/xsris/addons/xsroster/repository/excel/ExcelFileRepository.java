@@ -1,4 +1,4 @@
-package org.xsris.addons.xsroster.repository;
+package org.xsris.addons.xsroster.repository.excel;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

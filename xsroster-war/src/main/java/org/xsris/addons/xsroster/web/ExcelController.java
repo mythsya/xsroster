@@ -2,11 +2,16 @@ package org.xsris.addons.xsroster.web;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
@@ -14,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +30,7 @@ import org.xsris.addons.xsroster.entity.excel.ExcelFileRevisionOutput;
 import org.xsris.addons.xsroster.entity.metadata.OutputFormat;
 import org.xsris.addons.xsroster.service.ExcelFileService;
 import org.xsris.addons.xsroster.web.view.ExcelView;
+import org.xsris.addons.xsroster.web.view.ExcelView.ExcelSheetView;
 import org.xsris.addons.xsroster.web.view.JsonResult;
 import org.xsris.addons.xsroster.web.view.TreeNode;
 
@@ -41,6 +48,43 @@ public class ExcelController {
 	private ExcelFileService excelFileService;
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
+
+	@RequestMapping("svg/{id}")
+	public void exportSVG(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		ExcelFileRevisionOutput svg = excelFileService.openExcelOutput(id);
+		if (svg != null) {
+			byte[] svgData = svg.getData();
+			response.reset();
+			response.setContentType("text/xml");
+			OutputStream out = response.getOutputStream();
+			try {
+				out.write(svgData);
+				out.flush();
+			} finally {
+				IOUtils.closeQuietly(out);
+			}
+		}
+	}
+
+	@RequestMapping("xlsx/{id}")
+	public void exportXLSX(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		ExcelFile file = excelFileService.openExcel(id);
+		if (file != null) {
+			byte[] data = file.getCurrentRevision().getExcelContent();
+			response.reset();
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-disposition", "attachment; filename=" + id + ".xlsx");
+			OutputStream out = response.getOutputStream();
+			try {
+				out.write(data);
+				out.flush();
+			} finally {
+				IOUtils.closeQuietly(out);
+			}
+		}
+	}
 
 	@ResponseBody
 	@RequestMapping("history/tree")
@@ -91,6 +135,13 @@ public class ExcelController {
 			ExcelFileRevision rev = file.getCurrentRevision();
 			view.setRevisionId(rev.getId());
 			view.setContent(rev.getJsonContent());
+
+			List<ExcelFileRevisionOutput> outputs = rev.getOutputs();
+			if ((outputs != null) && !outputs.isEmpty()) {
+				for (ExcelFileRevisionOutput out : outputs) {
+					view.getSheets().add(new ExcelSheetView(out.getId(), out.getSheetIndex(), out.getSheetName()));
+				}
+			}
 		}
 		return view;
 	}

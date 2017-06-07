@@ -1,7 +1,6 @@
 $(document).ready(function() {
 	$(window).unload(function() {
-		valCurrentRosterId("");
-		valCurrentRosterName("", true);
+		resetAllInputFields();
 	});
 	
 	$("#current_roster_name_lbl").on("dblclick", function(e) {

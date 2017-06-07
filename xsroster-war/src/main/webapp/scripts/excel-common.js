@@ -6,9 +6,6 @@ var Calc = GC.Spread.CalcEngine;
 var ExpressionType = Calc.ExpressionType;
 var SheetsCalc = spreadNS.CalcEngine;
 var Sparklines = spreadNS.Sparklines;
-var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-var isIE = navigator.userAgent.toLowerCase().indexOf('compatible') < 0 && /(trident)(?:.*? rv ([\w.]+)|)/.exec(navigator.userAgent.toLowerCase()) !== null;
-var DOWNLOAD_DIALOG_WIDTH = 300;
 
 var spread, excelIO;
 var tableIndex = 1, pictureIndex = 1;
@@ -18,7 +15,6 @@ var resourceMap = {},
     conditionalFormatTexts = {};
 
 var fileImporterHandlers = {}; 
-
 
 $(document).ready(function() {
 
@@ -330,19 +326,6 @@ function importJson(spreadJson) {
     }
 }
 
-function getFileName() {
-    function to2DigitsString(num) {
-        return ("0" + num).substr(-2);
-    }
-
-    var date = new Date();
-    return [
-        "export",
-        date.getFullYear(), to2DigitsString(date.getMonth() + 1), to2DigitsString(date.getDate()),
-        to2DigitsString(date.getHours()), to2DigitsString(date.getMinutes()), to2DigitsString(date.getSeconds())
-    ].join("");
-}
-
 function exportToJSON() {
     var json = spread.toJSON({includeBindingSource: true}),
         text = JSON.stringify(json);
@@ -367,24 +350,7 @@ function exportToExcel() {
     var fileName = getFileName();
     var json = spread.toJSON({includeBindingSource: true});
     excelIO.save(json, function (blob) {
-        if (isSafari) {
-            var reader = new FileReader();
-            reader.onloadend = function () {                
-                showModal({
-                	title: uiResource.toolBar.downloadTitle,
-                	width: DOWNLOAD_DIALOG_WIDTH,
-                	content: $("#downloadDialog").children(),
-                	callback: function () {
-                        $("#downloadDialog").hide();
-                    }
-                });
-                var link = $("#download");
-                link[0].href = reader.result;
-            };
-            reader.readAsDataURL(blob);
-        } else {
-            saveAs(blob, fileName + ".xlsx");
-        }
+    	downloadExcelFile(blob, fileName + ".xlsx"); 
     }, function (e) {
         alert(e);
     });

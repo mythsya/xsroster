@@ -11,10 +11,11 @@ public interface ExcelFileService {
 
 	ExcelFile openExcel(String id);
 
+	ExcelFileRevisionOutput openExcelOutput(String id);
+
 	boolean publish(String id, List<ExcelFileRevisionOutput> outputs);
 
 	ExcelFile saveExcel(String id, String name, String tag, String path, byte[] excelContent, String jsonContent);
 
 	ExcelFile takeSnapshot(String id, String name, String snapshot, byte[] excelContent, String jsonContent);
-
 }

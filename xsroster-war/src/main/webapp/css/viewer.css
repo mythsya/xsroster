@@ -1,0 +1,13 @@
+.nav-tabs-narrow > li > a {
+    line-height: 1;
+}
+
+.nav-tabs-narrow > li.active > a, .nav-tabs-narrow > li.active > a:focus, .nav-tabs-narrow > li.active > a:hover {
+    background-color: #e5e5e5;
+    cursor: default;
+    font-weight: bold;
+}
+
+.tab-pane > iframe {
+	border : 0 none;
+}
