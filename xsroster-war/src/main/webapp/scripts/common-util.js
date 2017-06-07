@@ -15,7 +15,7 @@ var AppEnv = {};
 })();
 
 function resetAllInputFields() {
-	("input").each(function () {
+	$("input").each(function () {
 		$(this).val("");
 	});
 }
