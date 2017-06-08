@@ -65,7 +65,7 @@ function openSelectedRoster(e, $self) {
 				for(var i=0; i<data.sheets.length; i++) {					
 					var active = (i==0?'active':''), sheetId=data.sheets[i].id, sheetName = data.sheets[i].name;
 					liElems += '<li role="presentation" class="'+active+'"><a href="#'+sheetId+'" aria-controls="'+sheetId+'" role="tab" data-toggle="tab">'+sheetName+'</a></li>';
-					tabElems += '<div role="tabpanel" class="tab-pane '+active+'" id="'+sheetId+'"><iframe src="'+AppEnv.contextPath+'/excel/svg/'+sheetId+'" width="100%"></iframe></div>';
+					tabElems += '<div role="tabpanel" class="tab-pane '+active+'" id="'+sheetId+'"><iframe src="'+AppEnv.contextPath+'/excel/svg/'+sheetId+'" width="100%" title="'+sheetName+'"></iframe></div>';
 				}
 				var $nav = $("#excel-sheet-nav"), $tab = $("#excel-tab-content");
 				$nav.empty();
@@ -119,11 +119,12 @@ function exportToExcel() {
 }
 
 function printExcel() {
-	var iframes = $("#excel-tab-content .tab-pane iframe");
+	var iframes = $("#excel-tab-content .tab-pane.active iframe");
 	
-	for(var i=0; i<iframes.length; i++) {
-		console.info(iframes[i].contentWindow);
-		iframes[i].contentWindow.focus();
-		iframes[i].contentWindow.print();
+	if (iframes && iframes.length > 0) {
+		var ifr = iframes[0];
+		ifr.contentWindow.focus();
+		ifr.contentWindow.print();
 	}
+
 }
