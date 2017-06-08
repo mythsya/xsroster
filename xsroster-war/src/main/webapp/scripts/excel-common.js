@@ -318,7 +318,7 @@ function importJson(spreadJson) {
         updateActiveCells();
         spread.focus();
         fbx.workbook(spread);
-        onCellSelected();
+        //onCellSelected();
         syncSpreadPropertyValues();
         syncSheetPropertyValues();
     } else {

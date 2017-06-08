@@ -49,6 +49,23 @@ public class ExcelController {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
+	@ResponseBody
+	@RequestMapping("delete")
+	public JsonResult delete(@RequestParam(name = "id") String id) {
+		ExcelFile file = excelFileService.openExcel(id);
+		if (file != null) {
+			if (file.getPublished() && (file.getPublished() == true)) {
+				return JsonResult.error("1", "published excel can not be deleted !");
+			}
+
+			excelFileService.deleteExcel(file);
+			return JsonResult.success();
+
+		} else {
+			return JsonResult.error("-1", "no excel found !");
+		}
+	}
+
 	@RequestMapping("svg/{id}")
 	public void exportSVG(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
@@ -110,6 +127,11 @@ public class ExcelController {
 					list.add(pNode);
 				}
 				TreeNode child = TreeNode.buildLeafNode(file.getId(), file.getName(), false);
+				if ((file.getPublished() != null) && (file.getPublished() == true)) {
+					child.setIconSkin("published");
+				} else if ((file.getValid() != null) & (file.getValid() == true)) {
+					child.setIconSkin("valid");
+				}
 				pNode.getChildren().add(child);
 			}
 		}

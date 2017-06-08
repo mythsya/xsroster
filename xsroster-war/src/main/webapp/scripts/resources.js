@@ -68,7 +68,7 @@ var uiResource = {
         publish: {
         	title: "发布",
         	dialog: {
-        		confirmPublish: "请确认是否发布当前的排班计划？",
+        		confirmPublish: "注意，发布排班计划将把该排班计划通知到所有用户。请确认是否发布当前的排班计划？",
         		noValidRoster: "当前没有可供发布的排班计划！请先打开已有的排班计划或创建新的排班计划。",
         		success: "排班计划已发布成功！",
         		failure: "排班计划发布失败！"
@@ -112,10 +112,18 @@ var uiResource = {
             newButtonTitle: "全新创建排班计划",
             copyButtonTitle: "复制创建排班计划"
         },
+        status: {
+        	transient: "未保存",
+        	valid: "已保存未发布",
+        	published: "已发布"
+        },
         dialog: {
         	mustSelectOne: "请先选中一个排班计划！",
+        	mustSelectUnpublished: "请先选中一个未发布的排班计划！",
         	mustUniqueName: "名称已被使用，请使用新的名称！",
-        	remindSaveCurrentEdit: "注意，创建新的排班计划将丢弃对当前排班计划的所有更改！确定继续创建新的排班计划吗？"
+        	remindSaveCurrentEdit: "注意，创建新的排班计划将丢弃对当前排班计划的所有更改！确定继续创建新的排班计划吗？",
+        	deleteSuccess: "排班计划已成功删除！",
+        	deleteFailure: "排班计划删除失败！"
         }
     },
     spreadTab: {

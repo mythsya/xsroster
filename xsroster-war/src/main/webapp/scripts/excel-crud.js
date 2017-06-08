@@ -205,6 +205,7 @@ function publishCurrentRoster(e, $self) {
     		processData: true,	    		
     		success: function(data, status, xhr) {
     			$dlg.modal("hide");
+    			initZtreeNodes();
     			if (data.status == 'success') {
     				alert(getResource("toolBar.publish.dialog.success"));
     			} else {
@@ -278,12 +279,48 @@ function openSelectedRoster(e, $self) {
 }
 
 function delSelectedRoster(e, $self) {
-	if(!checkHistroyTreeNodeSelected()) {
+	var nodes = getSelectedHistroyTreeNodes();
+	
+	if (!nodes || nodes.length <= 0 || nodes[0].isParent || nodes[0].iconSkin=='published') {
 		showAlertDialog({
-        	message: getResource("histroyTab.dialog.mustSelectOne")
+        	message: getResource("histroyTab.dialog.mustSelectUnpublished")
         });
 		return false;
 	}
+	
+	if (nodes[0].iconSkin == 'transient') {
+		initZtreeNodes();
+		return true;
+	}
+	
+	var $dlg = showProgressDialog({
+		width: 400,
+		onClose: function() {}
+	});
+	
+	var nodeId = nodes[0].id;
+	$.ajax({
+		url: AppEnv.contextPath+"/excel/delete",
+		type: 'POST',
+		data: { id : nodeId},
+		cache: false,
+		processData: true,	    		
+		success: function(data, status, xhr) {
+			$dlg.modal("hide");
+			initZtreeNodes();
+			
+			if (data.status == 'success') {
+				alert(getResource("histroyTab.dialog.deleteSuccess"));
+			} else {
+				alert(getResource("histroyTab.dialog.deleteFailure"));
+			}
+		}, 
+		error: function(xhr, msg, e) {
+			$dlg.modal("hide");
+			alert(msg);
+		}
+	});
+	
 }
 
 function doCreateNewRoster($self, callback, initialValues) {

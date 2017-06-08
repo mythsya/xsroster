@@ -32,6 +32,18 @@ public class ExcelFileServiceImpl implements ExcelFileService {
 	@Autowired
 	private ExcelFileRevisionOutputRepository excelFileRevisionOutputRepository;
 
+	@Transactional
+	@Override
+	public boolean deleteExcel(ExcelFile excel) {
+		Assert.notNull(excel, "ExcelFile entity must not be null !");
+
+		excel.getRevisions().clear();
+
+		excelFileRepository.delete(excel);
+
+		return true;
+	}
+
 	@Override
 	public List<ExcelFile> listAllExcelFiles(boolean validOnly, boolean publishedOnly) {
 		Sort sort = new Sort(new Order(Direction.DESC, "createdWhen"), new Order(Direction.DESC, "name"));

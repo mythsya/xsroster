@@ -20,6 +20,10 @@ $(document).ready(function() {
         exportToExcel();
     });
     
+    $("#doPrint").click(function(e) {
+    	printExcel();
+    });
+    
     $("#toggleInspector").click(toggleInspector);
     
     $("#doOpenSelectedRoster").click(function(e) {
@@ -112,4 +116,14 @@ function exportToExcel() {
 	}
 	
 	doExportExcel(currentId);
+}
+
+function printExcel() {
+	var iframes = $("#excel-tab-content .tab-pane iframe");
+	
+	for(var i=0; i<iframes.length; i++) {
+		console.info(iframes[i].contentWindow);
+		iframes[i].contentWindow.focus();
+		iframes[i].contentWindow.print();
+	}
 }

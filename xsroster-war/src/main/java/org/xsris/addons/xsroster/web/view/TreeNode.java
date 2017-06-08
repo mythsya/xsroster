@@ -30,6 +30,7 @@ public class TreeNode {
 	private String target;
 	private String url;
 	private String icon;
+	private String iconSkin;
 	private List<TreeNode> children = new ArrayList<TreeNode>();
 
 	public List<TreeNode> getChildren() {
@@ -38,6 +39,10 @@ public class TreeNode {
 
 	public String getIcon() {
 		return icon;
+	}
+
+	public String getIconSkin() {
+		return iconSkin;
 	}
 
 	public String getId() {
@@ -70,6 +75,10 @@ public class TreeNode {
 
 	public void setIcon(String icon) {
 		this.icon = icon;
+	}
+
+	public void setIconSkin(String iconSkin) {
+		this.iconSkin = iconSkin;
 	}
 
 	public void setId(String id) {
