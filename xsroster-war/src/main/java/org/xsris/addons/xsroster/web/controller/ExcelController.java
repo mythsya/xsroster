@@ -1,4 +1,4 @@
-package org.xsris.addons.xsroster.web;
+package org.xsris.addons.xsroster.web.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,6 +19,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +44,7 @@ import com.aspose.cells.Worksheet;
 
 @Controller
 @RequestMapping("/excel")
+@PermitAll()
 public class ExcelController {
 
 	@Autowired
@@ -51,6 +54,7 @@ public class ExcelController {
 
 	@ResponseBody
 	@RequestMapping("delete")
+	@Secured({ "ROLE_ADMIN" })
 	public JsonResult delete(@RequestParam(name = "id") String id) {
 		ExcelFile file = excelFileService.openExcel(id);
 		if (file != null) {
@@ -170,6 +174,7 @@ public class ExcelController {
 
 	@ResponseBody
 	@RequestMapping("publish")
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	public JsonResult publish(@RequestParam(name = "id") String id) {
 		List<ExcelFileRevisionOutput> outputs = new ArrayList<ExcelFileRevisionOutput>();
 		ExcelFile file = excelFileService.openExcel(id);
@@ -232,6 +237,7 @@ public class ExcelController {
 
 	@ResponseBody
 	@RequestMapping("save")
+	@Secured({ "ROLE_USER", "ROLE_ADMIN" })
 	public JsonResult save(@RequestParam(name = "id", required = false) String id, @RequestParam("name") String name,
 			@RequestParam("tag") String tag, @RequestParam("path") String path,
 			@RequestParam("jsonCotent") String jsonCotent, @RequestParam("xlsxContent") MultipartFile xlsxContent) {
