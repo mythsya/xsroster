@@ -70,6 +70,11 @@ public class ExcelController {
 		}
 	}
 
+	@RequestMapping("editor")
+	public String editor() {
+		return "excel";
+	}
+
 	@RequestMapping("svg/{id}")
 	public void exportSVG(@PathVariable("id") String id, HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
@@ -251,5 +256,10 @@ public class ExcelController {
 			logger.error("Failed to save excel file , caused by ", e);
 			return JsonResult.error("1", "Failed to save excel file , caused by " + e.getMessage(), e);
 		}
+	}
+
+	@RequestMapping("viewer")
+	public String viewer() {
+		return "viewer";
 	}
 }

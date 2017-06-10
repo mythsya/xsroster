@@ -6,13 +6,13 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <title>用户登录</title>
-  <link rel="stylesheet" href="static/css/font-awesome.css">
-  <link rel="stylesheet" href="static/css/bootstrap-3.3.7.min.css">
-  <link rel="stylesheet" href="static/css/formValidation.min.css">
+  <link rel="stylesheet" href="<c:url value='/static/css/font-awesome.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/bootstrap-3.3.7.min.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/formValidation.min.css'/>">
   
-  <script type="text/javascript" src="static/scripts/jquery-1.11.1.js"></script>
-  <script type="text/javascript" src="static/scripts/bootstrap-3.3.7.min.js"></script>
-  <script type="text/javascript" src="static/scripts/md5.js"></script>
+  <script type="text/javascript" src="<c:url value='/static/scripts/jquery-1.11.1.js'/>"></script>
+  <script type="text/javascript" src="<c:url value='/static/scripts/bootstrap-3.3.7.min.js'/>"></script>
+  <script type="text/javascript" src="<c:url value='/static/scripts/md5.js'/>"></script>
   <script type="text/javascript" >
 	function beforeSubmit() {
 		var $pwd = $("#inputPassword");

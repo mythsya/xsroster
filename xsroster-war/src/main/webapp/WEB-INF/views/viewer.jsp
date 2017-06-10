@@ -1,30 +1,32 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
-  <title>排班表</title>
-  <link rel="stylesheet" href="css/font-awesome.css">
-  <link rel="stylesheet" href="css/bootstrap-3.3.7.min.css">
-  <link rel="stylesheet" href="css/formValidation.min.css">
+  <title>排班计划表</title>
+  <link rel="stylesheet" href="<c:url value='/static/css/font-awesome.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/bootstrap-3.3.7.min.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/formValidation.min.css'/>">
   
-  <link rel="stylesheet" href="css/inspector.css">
-  <link rel="stylesheet" href="css/insp-table-format.css">
-  <link rel="stylesheet" href="css/insp-slicer-format.css">
-  <link rel="stylesheet" href="css/insp-conditional-formatting.css">
-  <link rel="stylesheet" href="css/colorpicker.css">
-  <link rel="stylesheet" href="css/borderpicker.css">
-  <link rel="stylesheet" href="css/insp-spread.css">
-  <link rel="stylesheet" href="css/excel.css">
-  <link rel="stylesheet" href="css/viewer.css">
-  <link rel="stylesheet" href="css/ztree-metro-style.css">
+  <link rel="stylesheet" href="<c:url value='/static/css/inspector.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/insp-table-format.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/insp-slicer-format.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/insp-conditional-formatting.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/colorpicker.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/borderpicker.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/insp-spread.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/excel.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/viewer.css'/>">
+  <link rel="stylesheet" href="<c:url value='/static/css/ztree-metro-style.css'/>">
 
-  <script type="text/javascript" src="scripts/jquery-1.11.1.js"></script>
-  <script type="text/javascript" src="scripts/bootstrap-3.3.7.min.js"></script>
-  <script type="text/javascript" src="scripts/jquery.ztree.all.3.5.28.min.js"></script>
-  <script type="text/javascript" src="scripts/resources.js"></script>
-  <script type="text/javascript" src="scripts/common-util.js"></script>
-  <script type="text/javascript" src="scripts/viewer.js"></script>
+  <script type="text/javascript" src="<c:url value='/static/scripts/jquery-1.11.1.js'/>"></script>
+  <script type="text/javascript" src="<c:url value='/static/scripts/bootstrap-3.3.7.min.js'/>"></script>
+  <script type="text/javascript" src="<c:url value='/static/scripts/jquery.ztree.all.3.5.28.min.js'/>"></script>
+  <script type="text/javascript" src="<c:url value='/static/scripts/resources.js'/>"></script>
+  <script type="text/javascript" src="<c:url value='/static/scripts/common-util.js'/>"></script>
+  <script type="text/javascript" src="<c:url value='/static/scripts/viewer.js'/>"></script>
 </head>
 <body class="unselectable">
 <div class="toolbar" id="toolbar">

@@ -36,10 +36,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/css/**", "/scripts/**", "/fonts/**", "/**/viewer.html**",
-				"/**/login.html**").permitAll().antMatchers("/**/*.html**").hasRole("USER").and().formLogin().loginPage(
-						"/login").usernameParameter("username").passwordParameter(
-								"password").and().httpBasic().and().csrf().disable();
+		http.authorizeRequests().antMatchers("/", "/home").permitAll().antMatchers("/excel/editor**").hasAuthority(
+				"ROLE_ADMIN").antMatchers("/excel/**").hasAnyAuthority("ROLE_USER",
+						"ROLE_ADMIN").and().formLogin().loginPage("/login").usernameParameter(
+								"username").passwordParameter("password").and().exceptionHandling().accessDeniedPage(
+										"/Access_Denied").and().csrf().disable();
 	}
 
 	@Override
