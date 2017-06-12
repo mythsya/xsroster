@@ -58,16 +58,11 @@
               </div>
               <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Remember me
-                    </label>
-                  </div>
                 </div>
               </div>
               <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" class="btn  btn-primary" style="width:100px;">登 &nbsp; 录</button>
+                <div class="col-sm-offset-2 col-sm-8">
+                  <button type="submit" class="btn  btn-primary btn-block">登 &nbsp; 录</button>
                 </div>
               </div>
             </form>
