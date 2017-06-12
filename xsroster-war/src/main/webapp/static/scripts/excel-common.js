@@ -29,6 +29,10 @@ $(document).ready(function() {
         $("#fileSelector").click();
     });
     
+    $("#doLogout").click(function() {
+    	window.location.href = AppEnv.contextPath+"/logout";
+    });
+    
     fileImporterHandlers["addpicture"] = handler4AddPicture;
     
     initZtreeNodes({

@@ -9,7 +9,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jms.annotation.EnableJms;
 
 import com.aspose.cells.License;
 
@@ -17,7 +16,6 @@ import com.aspose.cells.License;
 @EntityScan(basePackages = "org.xsris.addons.xsroster.entity")
 @ComponentScan(basePackages = "org.xsris.addons.xsroster")
 @EnableJpaRepositories(basePackages = "org.xsris.addons.xsroster")
-@EnableJms
 public class XsRosterMainAppEntry extends SpringBootServletInitializer {
 
 	public static void main(String[] args) throws Exception {

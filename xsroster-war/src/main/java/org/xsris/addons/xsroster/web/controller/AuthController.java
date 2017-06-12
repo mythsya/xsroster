@@ -30,6 +30,9 @@ public class AuthController {
 	@RequestMapping(value = { "/", "/home" })
 	public String home(ModelMap model) {
 		UserDetails user = getPrincipal();
+		if (user == null) {
+			return "redirect:/login";
+		}
 
 		SimpleGrantedAuthority hasAdmin = new SimpleGrantedAuthority("ROLE_ADMIN");
 		if (user.getAuthorities().contains(hasAdmin)) {
@@ -53,7 +56,12 @@ public class AuthController {
 	}
 
 	private UserDetails getPrincipal() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null) {
+			return null;
+		}
+
+		Object principal = auth.getPrincipal();
 
 		if (principal instanceof UserDetails) {
 			return ((UserDetails) principal);

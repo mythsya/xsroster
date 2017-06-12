@@ -253,6 +253,15 @@ function initZtreeNodes(cfg) {
         
         if (typeof (autoOpenExcelId) != 'undefined' && autoOpenExcelId) {
         	selectNodeById(autoOpenExcelId);
+        } else if (autoOpenLatest) {
+        	if (zNodes && zNodes.length > 0) {
+        		var node1 = zNodes[0];
+        		if(node1.children && node1.children.length > 0) {
+        			var nodeid = node1.children[0].id;
+            		selectNodeById(nodeid);
+            		openRosterViewById(nodeid);
+            	}
+        	}
         }
     });
     

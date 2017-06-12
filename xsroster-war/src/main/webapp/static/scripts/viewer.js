@@ -16,6 +16,10 @@ $(document).ready(function() {
     	showPublished: true
     });
     
+    $("#doLogout").click(function() {
+    	window.location.href = AppEnv.contextPath+"/logout";
+    });
+    
     $("#doExport").click(function () {
         exportToExcel();
     });
@@ -41,7 +45,7 @@ $(document).ready(function() {
     
     if (autoOpenExcelId) {
     	openRosterViewById(autoOpenExcelId);
-    }
+    } 
 });
 
 function openRosterViewById(id) {

@@ -91,6 +91,9 @@ var uiResource = {
         		tagLabel: "标签",
         		title: "补充排班计划信息"
         	}
+        },
+        logout: {
+        	title: "登出系统"
         }
     },
     tabs: {

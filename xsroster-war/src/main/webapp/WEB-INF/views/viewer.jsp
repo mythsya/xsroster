@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="<c:url value='/static/css/ztree-metro-style.css'/>">
   <script type="text/javascript">
   var autoOpenExcelId = "${id}";
+  var autoOpenLatest = true;
   </script>
   <script type="text/javascript" src="<c:url value='/static/scripts/jquery-1.11.1.js'/>"></script>
   <script type="text/javascript" src="<c:url value='/static/scripts/bootstrap-3.3.7.min.js'/>"></script>
@@ -41,16 +42,22 @@
                 <div class="insp-row">
                     <div>
 						<div style="width:20px;"></div>
+						<button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doLogout"
+                                title="@toolBar.logout.title@">
+                            <span class="glyphicon glyphicon-log-out fa-2x"></span>
+                        </button>
+                        <div style="width:10px;"></div>
 						<button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doExport"
                                 title="@toolBar.export.title@">
                             <span class="fa fa-file-excel-o fa-2x"></span>
                         </button>
+                        <!-- -
                         <div style="width:10px;"></div>
                         <button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doPrint"
                                 title="@toolBar.printTitle@">
                             <span class="fa fa-print fa-2x"></span>
                         </button>
-                                                
+                         -->
                     </div>
                 </div>
             </div>

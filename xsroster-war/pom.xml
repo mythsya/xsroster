@@ -56,6 +56,7 @@
 		<artifactId>jstl</artifactId>
 	</dependency>
     
+    <!-- 
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-activemq</artifactId>
@@ -76,6 +77,7 @@
       <groupId>org.springframework.integration</groupId>
       <artifactId>spring-integration-jms</artifactId>
     </dependency>
+    -->
     
     <dependency>
       <groupId>commons-io</groupId>
@@ -116,7 +118,7 @@
         <artifactId>maven-war-plugin</artifactId>        
         <configuration>
           <classifier>${classifier}</classifier>
-          <warName>roster</warName>
+          <warName>xsroster</warName>
           <webXml>${webXml}</webXml>
           <webappDirectory>${project.build.directory}/${project.build.finalName}-${classifier}</webappDirectory>
         </configuration>

@@ -82,7 +82,7 @@
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
               <classifier>unsecure</classifier>
-              <warName>roster-ui</warName>
+              <warName>xsroster-ui</warName>
               <webXml>${project.basedir}/src/main/webxml/web.xml</webXml>
               <webResources>
                 <resource>
@@ -108,7 +108,7 @@
             <artifactId>maven-war-plugin</artifactId>
             <configuration>
               <classifier>secure</classifier>
-              <warName>roster-ui</warName>
+              <warName>xsroster-ui</warName>
               <webXml>${project.basedir}/src/main/webxml/web-secure.xml</webXml>
               <webResources>
                 <resource>

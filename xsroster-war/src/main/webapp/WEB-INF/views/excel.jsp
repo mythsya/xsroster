@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="<c:url value='/static/css/ztree-metro-style.css'/>">
   <script type="text/javascript">
   var autoOpenExcelId = "${id}";
+  var autoOpenLatest = false;
   </script>
   <script type="text/javascript" src="<c:url value='/static/scripts/jquery-1.11.1.js'/>"></script>
   <script type="text/javascript" src="<c:url value='/static/scripts/jquery-ui-1.10.3.js'/>"></script>
