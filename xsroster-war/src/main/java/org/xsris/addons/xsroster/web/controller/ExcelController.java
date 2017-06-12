@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -71,7 +72,8 @@ public class ExcelController {
 	}
 
 	@RequestMapping("editor")
-	public String editor() {
+	public String editor(@RequestParam(name = "id", required = false) String id, ModelMap model) {
+		model.addAttribute("id", id);
 		return "excel";
 	}
 
@@ -259,7 +261,8 @@ public class ExcelController {
 	}
 
 	@RequestMapping("viewer")
-	public String viewer() {
+	public String viewer(@RequestParam(name = "id", required = false) String id, ModelMap model) {
+		model.addAttribute("id", id);
 		return "viewer";
 	}
 }

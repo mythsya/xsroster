@@ -246,6 +246,22 @@ function tagCurrentRoster(e, $self) {
 	});
 }
 
+function openRosterViewById(id) {
+	doOpenRosterById(id, function(data, status, xhr) {
+		
+		if (status == 'success' && data.id) {
+			var spreadJson = JSON.parse(data.content);
+		    importJson(spreadJson);
+		    valCurrentRosterId(data.id);
+			valCurrentRosterTag(data.tag);
+			valCurrentRosterName(data.name, true);
+		} else {
+			alert("Can not load excel file!");
+		}
+		
+	});
+}
+
 function openSelectedRoster(e, $self) {
 	if(!checkHistroyTreeNodeSelected()) {
 		showAlertDialog({
@@ -260,19 +276,8 @@ function openSelectedRoster(e, $self) {
 			if (confirmed === true) {
 				var checked = getSelectedHistroyTreeNodes(),
 					nodeId = checked[0].id;
-				doOpenRosterById(nodeId, function(data, status, xhr) {
-					
-					if (status == 'success' && data.id) {
-						var spreadJson = JSON.parse(data.content);
-					    importJson(spreadJson);
-					    valCurrentRosterId(data.id);
-						valCurrentRosterTag(data.tag);
-						valCurrentRosterName(data.name, true);
-					} else {
-						alert("Can not load excel file!");
-					}
-					
-				});
+				
+				openRosterViewById(nodeId);
 			}
 		}
 	});

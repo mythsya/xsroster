@@ -20,7 +20,9 @@
   <link rel="stylesheet" href="<c:url value='/static/css/excel.css'/>">
   <link rel="stylesheet" href="<c:url value='/static/css/viewer.css'/>">
   <link rel="stylesheet" href="<c:url value='/static/css/ztree-metro-style.css'/>">
-
+  <script type="text/javascript">
+  var autoOpenExcelId = "${id}";
+  </script>
   <script type="text/javascript" src="<c:url value='/static/scripts/jquery-1.11.1.js'/>"></script>
   <script type="text/javascript" src="<c:url value='/static/scripts/bootstrap-3.3.7.min.js'/>"></script>
   <script type="text/javascript" src="<c:url value='/static/scripts/jquery.ztree.all.3.5.28.min.js'/>"></script>

@@ -39,20 +39,13 @@ $(document).ready(function() {
 		$(this).tab('show');
 	});
     
+    if (autoOpenExcelId) {
+    	openRosterViewById(autoOpenExcelId);
+    }
 });
 
-function openSelectedRoster(e, $self) {
-	if(!checkHistroyTreeNodeSelected()) {
-		showAlertDialog({
-        	message: getResource("histroyTab.dialog.mustSelectOne")
-        });
-		return false;
-	}
-	
-	var checked = getSelectedHistroyTreeNodes(),
-		nodeId = checked[0].id;
-	
-	doOpenRosterById(nodeId, function(data, status, xhr) {		
+function openRosterViewById(id) {
+	doOpenRosterById(id, function(data, status, xhr) {		
 		if (status == 'success' && data.id) {
 		    valCurrentRosterId(data.id);
 			valCurrentRosterTag(data.tag);
@@ -82,8 +75,21 @@ function openSelectedRoster(e, $self) {
 		} else {
 			alert("Can not load excel file!");
 		}
-	});
+	});	
+}
 
+function openSelectedRoster(e, $self) {
+	if(!checkHistroyTreeNodeSelected()) {
+		showAlertDialog({
+        	message: getResource("histroyTab.dialog.mustSelectOne")
+        });
+		return false;
+	}
+	
+	var checked = getSelectedHistroyTreeNodes(),
+		nodeId = checked[0].id;
+	
+	openRosterViewById(nodeId);
 }
 
 function doExportExcel(id) {

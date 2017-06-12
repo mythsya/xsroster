@@ -250,6 +250,10 @@ function initZtreeNodes(cfg) {
     $.getJSON(AppEnv.contextPath+"/excel/history/tree", params, function(data, status, xhr) {
     	var zNodes = data; 
         $.fn.zTree.init($("#"+histroyTreeObjId), setting, zNodes);
+        
+        if (typeof (autoOpenExcelId) != 'undefined' && autoOpenExcelId) {
+        	selectNodeById(autoOpenExcelId);
+        }
     });
     
 }
@@ -307,6 +311,15 @@ function appendNewRoster(name, tag, clearTransient) {
 	var newNodes = zTree.addNodes(pNode, 0, {"id":"","name":name,"isParent":false,"open":true, "transient": true, "iconSkin":"transient"}, true);
 	zTree.expandNode(pNode, true, true, true);
 	return newNodes;
+}
+
+function selectNodeById(id) {
+	var zTree = getHistroyTreeObj();
+	var nodes = zTree.getNodesByParam("id", id, null);	
+
+	if (nodes && nodes.length >0) {
+		zTree.checkNode(nodes[0], true, true);
+	}
 }
 //roster histroy tree related items (end)
 

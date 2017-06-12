@@ -6015,13 +6015,17 @@ $(document).ready(function () {
     syncSheetPropertyValues();
     syncSpreadPropertyValues();
 
-    onCellSelected();
+    //onCellSelected();
 
     updatePositionBox(spread.getActiveSheet());
 
     //fix bug 220484
     if (isIE) {
         $("#formulabox").css('padding', 0);
+    }
+    
+    if (autoOpenExcelId) {
+    	openRosterViewById(autoOpenExcelId);
     }
 });
 
