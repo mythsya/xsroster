@@ -116,16 +116,16 @@
     <plugins>
       <plugin>
         <artifactId>maven-war-plugin</artifactId>        
-        <configuration>
-          <classifier>${classifier}</classifier>
+        <configuration>          
           <warName>xsroster</warName>
-          <webXml>${webXml}</webXml>
-          <webappDirectory>${project.build.directory}/${project.build.finalName}-${classifier}</webappDirectory>
+          <webXml>${project.basedir}/src/main/webxml/web.xml</webXml>
+          <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
         </configuration>
       </plugin>
     </plugins>
   </build>
 
+  <!--
   <profiles>
     <profile>
       <id>unsecure</id>
@@ -154,4 +154,5 @@
       </properties>
     </profile>
   </profiles>
+  -->
 </project>

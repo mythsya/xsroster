@@ -212,7 +212,6 @@
     <module>xsroster-entity</module>
     <module>xsroster-service</module>
     <module>xsroster-rs</module>
-    <module>xsroster-ui</module>
     <module>xsroster-war</module>
   </modules>
 
