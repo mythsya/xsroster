@@ -4,7 +4,7 @@ var resourceMap = {},
 $(document).ready(function() {
 	
 	$(window).unload(function() {
-		resetAllInputFields();
+		resetAllInputFields();		
 	});
 	
     getResourceMap(uiResource);
@@ -17,7 +17,7 @@ $(document).ready(function() {
     });
     
     $("#doLogout").click(function() {
-    	window.location.href = AppEnv.contextPath+"/logout";
+    	window.location.href = AppEnv.contextPath+"/logoutPage";
     });
     
     $("#doExport").click(function () {

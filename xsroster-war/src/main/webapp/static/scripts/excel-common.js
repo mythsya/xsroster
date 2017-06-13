@@ -30,7 +30,7 @@ $(document).ready(function() {
     });
     
     $("#doLogout").click(function() {
-    	window.location.href = AppEnv.contextPath+"/logout";
+    	window.location.href = AppEnv.contextPath+"/logoutPage";
     });
     
     fileImporterHandlers["addpicture"] = handler4AddPicture;

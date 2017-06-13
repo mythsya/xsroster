@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +37,7 @@ import org.xsris.addons.xsroster.entity.excel.ExcelFileRevision;
 import org.xsris.addons.xsroster.entity.excel.ExcelFileRevisionOutput;
 import org.xsris.addons.xsroster.entity.metadata.OutputFormat;
 import org.xsris.addons.xsroster.service.ExcelFileService;
+import org.xsris.addons.xsroster.web.auth.UserInfo;
 import org.xsris.addons.xsroster.web.view.ExcelView;
 import org.xsris.addons.xsroster.web.view.ExcelView.ExcelSheetView;
 import org.xsris.addons.xsroster.web.view.JsonResult;
@@ -74,6 +80,7 @@ public class ExcelController {
 	@RequestMapping("editor")
 	public String editor(@RequestParam(name = "id", required = false) String id, ModelMap model) {
 		model.addAttribute("id", id);
+		model.addAttribute("user", getPrincipal());
 		return "excel";
 	}
 
@@ -263,6 +270,24 @@ public class ExcelController {
 	@RequestMapping("viewer")
 	public String viewer(@RequestParam(name = "id", required = false) String id, ModelMap model) {
 		model.addAttribute("id", id);
+		model.addAttribute("user", getPrincipal());
 		return "viewer";
+	}
+
+	private UserDetails getPrincipal() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null) {
+			return null;
+		}
+
+		Object principal = auth.getPrincipal();
+
+		if (principal instanceof UserDetails) {
+			return ((UserDetails) principal);
+		} else {
+			return new UserInfo(principal.toString(), "", true, true, true, true,
+					Collections.<GrantedAuthority> emptySet());
+		}
+
 	}
 }

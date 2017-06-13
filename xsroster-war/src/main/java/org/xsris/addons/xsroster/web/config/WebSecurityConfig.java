@@ -4,6 +4,9 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.dao.ReflectionSaltSource;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
@@ -16,7 +19,34 @@ import org.xsris.addons.xsroster.web.auth.UserInfoService;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
+
+	@Configuration
+	@Order(1)
+	public static class BasicLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			http.antMatcher("/httpBasic").authorizeRequests().anyRequest().permitAll();
+			http.antMatcher("/basicLogin").authorizeRequests().anyRequest().authenticated().and().httpBasic();
+			http.anonymous().disable();
+			http.csrf().disable();
+		}
+	}
+
+	@Configuration
+	public static class FormLoginWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+
+		@Override
+		protected void configure(HttpSecurity http) throws Exception {
+			http.authorizeRequests().antMatchers("/", "/home").permitAll().antMatchers("/excel/editor**").hasAuthority(
+					"ROLE_ADMIN").antMatchers("/excel/**").hasAnyAuthority("ROLE_USER",
+							"ROLE_ADMIN").and().formLogin().loginPage("/login").defaultSuccessUrl(
+									"/home").usernameParameter("username").passwordParameter(
+											"password").and().exceptionHandling().accessDeniedPage("/Access_Denied");
+			http.anonymous().disable();
+			http.csrf().disable();
+		}
+	}
 
 	@Autowired
 	@Qualifier("externalAuthDataSource")
@@ -34,22 +64,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		builder.authenticationProvider(authProvider);
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/", "/home").permitAll().antMatchers("/excel/editor**").hasAuthority(
-				"ROLE_ADMIN").antMatchers("/excel/**").hasAnyAuthority("ROLE_USER",
-						"ROLE_ADMIN").and().formLogin().loginPage("/login").defaultSuccessUrl(
-								"/home").usernameParameter("username").passwordParameter(
-										"password").and().exceptionHandling().accessDeniedPage("/Access_Denied");
-		http.anonymous().disable();
-		http.csrf().disable();
-	}
-
-	@Override
-	protected UserInfoService userDetailsService() {
+	@Bean
+	public UserInfoService userDetailsService() {
 		return new UserInfoService().setUsersUsernameQuery(
 				"select username,password,enabled,id,rolename,id from auth_user where username=?").setAuthoritiesUsernameQuery(
 						"select distinct t.user_id, decode(authority,'AUTH_ROSTER','ROLE_ADMIN','ROLE_USER') from auth_user_group t, auth_group g, auth_group_authority ga where t.group_id = g.id and g.id = ga.auth_group_id and t.user_id=?").dataSource(
 								externalAuthDataSource);
 	}
+
 }

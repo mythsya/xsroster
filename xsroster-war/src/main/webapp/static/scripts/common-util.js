@@ -585,3 +585,14 @@ function downloadExcelFile(blob, fileName) {
 
 }
 //file download related items (end)
+
+function doLogout() {
+	$.ajax({
+		url: AppEnv.contextPath+"/logout",
+		type: "get",
+		success: function (data, status, xhr) {
+		},
+		error: function(xhr, msg, e) {
+		}
+	});
+}

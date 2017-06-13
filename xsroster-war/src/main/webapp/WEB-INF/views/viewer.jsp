@@ -41,7 +41,8 @@
             <div>
                 <div class="insp-row">
                     <div>
-						<div style="width:20px;"></div>
+						
+						<span class="label label-default" style="font-size:12px;">${user.getUsername()}</span>
 						<button type="button" class="btn btn-default btn-toolbar localize-tooltip" id="doLogout"
                                 title="@toolBar.logout.title@">
                             <span class="glyphicon glyphicon-log-out fa-2x"></span>
