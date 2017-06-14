@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="xsroster" default="release" basedir=".">
+    <property environment="env" />
+    <property name="workspace.dir" value="${env.WORKSPACE}" />
+	<property name="main.dir" value="${workspace.dir}" />
+    <property name="release.dir" value="${workspace.dir}/dest" />
+	<property name="release.bin.dir" value="${release.dir}/bin" />
+    <property name="release.publish.dir" value="${workspace.dir}/release" />
+    
+    <property name="build.main.version" value="${env.PRODUCT_VERSION}" />
+	<property name="build.minor.version" value="${env.BUILD_NUMBER}" />
+    
+    <property name="build.full.version" value="${build.main.version}_Build#${build.minor.version}" />
+	<property name="release.version" value="${build.main.version}-${env.RELEASE_VERSION}.${env.BUILD_NUMBER}" />
+	<property name="development.version" value="${build.main.version}-SNAPSHOT.${env.BUILD_NUMBER}" />
+    
+    <property name="release.war.name" value="XSROSTER-${release.version}.zip" />
+	<property name="development.war.name" value="XSROSTER-${development.version}.zip" />
+    
+    <!-- Properties prepared for building -->
+    <property name="extra.dir" value="${main.dir}/xsroster-scripts" />
+	<property name="build.antlib.dir" value="${extra.dir}/ant/lib" />
+    
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpath="${build.antlib.dir}/ant-contrib-1.0b3.jar" />
+    
+	<!-- Prepare necessary directories for release -->
+	<target name="prepare-build">
+		<echo>Prepare directories for release ... </echo>
+		<delete dir="${release.dir}" />
+		<delete dir="${release.publish.dir}" />
+		<mkdir dir="${release.dir}" />
+		<mkdir dir="${release.bin.dir}" />
+
+		<if>
+			<available file="${main.dir}/xsroster-war/target/xsroster.war" />
+			<then>
+				<echo>unwar xsroster.war ...</echo>
+				<unzip src="${main.dir}/xsroster-war/target/xsroster.war" dest="${release.bin.dir}/xsroster" />
+			</then>
+		</if>
+
+		<copy todir="${release.dir}/fresh-install">
+			<fileset dir="${extra.dir}/database/fresh-install" />
+		</copy>
+		<copy todir="${release.dir}/upgrade">
+			<fileset dir="${extra.dir}/database/upgrade" />
+		</copy>
+	</target>
+    
+    <target name="build" depends="prepare-build">
+		<echo>Run build ... </echo>
+		<mkdir dir="${release.publish.dir}" />
+		<zip destfile="${release.publish.dir}/${development.war.name}" basedir="${release.dir}" />
+		<echo>build complete! </echo>
+	</target>
+    
+	<target name="release">
+		<delete dir="${release.publish.dir}" />
+		<mkdir dir="${release.publish.dir}" />
+		<zip destfile="${release.publish.dir}/${release.war.name}" basedir="${release.dir}" />
+		<echo>release complete! </echo>
+	</target>
+    
+</project>
