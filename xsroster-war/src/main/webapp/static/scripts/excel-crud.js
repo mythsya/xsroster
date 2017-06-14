@@ -44,6 +44,18 @@ $(document).ready(function() {
 	$("#doCopyCreateNewRoster").click(function(e) {
 		copyCreateNewRoster(e, $(this));
 	});
+	
+	setInterval(function() {
+		$.ajax({
+			url: AppEnv.contextPath+"/keepAlive",
+			type: 'GET',		
+			success: function(data, status, xhr) {	
+			}, 
+			error: function(xhr, msg, e) {
+				alert(msg);
+			}
+		});
+	}, 5*60*1000);
 });
 
 function editCurrentRosterName(e, $self) {

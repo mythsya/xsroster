@@ -4,8 +4,10 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.dao.ReflectionSaltSource;
@@ -19,6 +21,7 @@ import org.xsris.addons.xsroster.web.auth.UserInfoService;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
+@PropertySource("classpath:sql/security-queries.sql.xml")
 public class WebSecurityConfig {
 
 	@Configuration
@@ -52,6 +55,12 @@ public class WebSecurityConfig {
 	@Qualifier("externalAuthDataSource")
 	private DataSource externalAuthDataSource;
 
+	@Value("${userDetailsService.usersByUsernameQuery}")
+	private String usersUsernameQuery;
+
+	@Value("${userDetailsService.authoritiesByUsernameQuery}")
+	private String authoritiesUsernameQuery;
+
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
 		// builder.inMemoryAuthentication().withUser("ris").password("agfa123").roles("USER");
@@ -66,10 +75,8 @@ public class WebSecurityConfig {
 
 	@Bean
 	public UserInfoService userDetailsService() {
-		return new UserInfoService().setUsersUsernameQuery(
-				"select username,password,enabled,id,rolename,id from auth_user where username=?").setAuthoritiesUsernameQuery(
-						"select distinct t.user_id, decode(authority,'AUTH_ROSTER','ROLE_ADMIN','ROLE_USER') from auth_user_group t, auth_group g, auth_group_authority ga where t.group_id = g.id and g.id = ga.auth_group_id and t.user_id=?").dataSource(
-								externalAuthDataSource);
+		return new UserInfoService().setUsersUsernameQuery(usersUsernameQuery).setAuthoritiesUsernameQuery(
+				authoritiesUsernameQuery).dataSource(externalAuthDataSource);
 	}
 
 }

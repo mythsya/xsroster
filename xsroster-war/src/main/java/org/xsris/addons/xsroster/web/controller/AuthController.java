@@ -64,6 +64,14 @@ public class AuthController {
 		return "redirect:/login";
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/keepAlive")
+	public JsonResult keepAlive(ModelMap model) {
+		UserDetails user = getPrincipal();
+		model.addAttribute("user", user != null ? user.getUsername() : "");
+		return JsonResult.success();
+	}
+
 	@RequestMapping(value = "/login")
 	public String loginPage() {
 		return "login";

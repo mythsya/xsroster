@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties PUBLIC "xml property dtd" "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+    <entry key="userDetailsService.usersByUsernameQuery">
+    <![CDATA[
+    	select username,password,enabled,id,rolename,id 
+    	from auth_user 
+    	where lower(username)=lower(?)
+    ]]>
+    </entry>
+    <entry key="userDetailsService.authoritiesByUsernameQuery">
+    <![CDATA[
+	    select distinct t.user_id, decode(authority,'AUTH_ROSTER','ROLE_ADMIN','ROLE_USER') 
+	    from auth_user_group t, auth_group g, auth_group_authority ga 
+	    where t.group_id = g.id and g.id = ga.auth_group_id and t.user_id=?
+    ]]>    
+    </entry>
+</properties>
