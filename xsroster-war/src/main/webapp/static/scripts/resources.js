@@ -1417,6 +1417,16 @@ var uiResource = {
     },
     rosterHistroy: {
         dialogTitle: "既往排班表"
+    },
+    fontFamilyList : {
+    	SimSun: "宋体",
+    	NSimSun: "新宋体",
+    	FangSong: "仿宋",
+    	KaiTi: "楷体",
+    	SimHei: "黑体",
+    	MicrosoftYaHei: "微软雅黑",
+    	MicrosoftJhengHei: "微软正黑体",
+    	LiSu: "隶书"
     }
 };
 
