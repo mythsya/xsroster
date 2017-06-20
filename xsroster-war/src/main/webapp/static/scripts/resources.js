@@ -1426,7 +1426,8 @@ var uiResource = {
     	SimHei: "黑体",
     	MicrosoftYaHei: "微软雅黑",
     	MicrosoftJhengHei: "微软正黑体",
-    	LiSu: "隶书"
-    }
+    	LiSu: "隶书"    	
+    },
+    defaultFontFamily : "宋体"
 };
 

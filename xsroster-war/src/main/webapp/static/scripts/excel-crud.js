@@ -95,7 +95,9 @@ function importExistingExcel(e, $self) {
 }
 
 function handler4ImportExcel(file, action) {
-	if (!/application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet/.test(file.type)) {            
+	var namepassed = /.*\.xlsx/gi.test(file.name);
+	var typepassed = !file.type || /application\/vnd.openxmlformats-officedocument.spreadsheetml.sheet/.test(file.type);
+	if (!namepassed || !typepassed) {            
         showAlertDialog({
         	message: getResource("toolBar.import.xlsxFileRequired")
         });
@@ -163,7 +165,11 @@ function saveCurrentRoster(e, $self) {
 	    		contentType: false,
 	    		success: function(data, status) {
 	    			$dlg.modal("hide");
-	    			initZtreeNodes();
+	    			initZtreeNodes({
+	    				callback: function(nodes) {
+	    					selectNodeById(data.code);
+	    				}
+	    			});
 	    			if (data.status == 'success') {
 	    				valCurrentRosterId(data.code);
 	    				alert(getResource("toolBar.save.dialog.success"));
@@ -217,7 +223,11 @@ function publishCurrentRoster(e, $self) {
     		processData: true,	    		
     		success: function(data, status, xhr) {
     			$dlg.modal("hide");
-    			initZtreeNodes();
+    			initZtreeNodes({
+    				callback: function(nodes) {
+    					selectNodeById(data.code);
+    				}
+    			});
     			if (data.status == 'success') {
     				alert(getResource("toolBar.publish.dialog.success"));
     			} else {
@@ -369,8 +379,11 @@ function createNewRoster(e, $self) {
 	doCreateNewRoster($self, function(name, tag) {
 		valCurrentRosterId("");
 		spread.clearSheets();
-		var sheet = new GC.Spread.Sheets.Worksheet('Sheet1');
+		var sheet = new GC.Spread.Sheets.Worksheet('Sheet1');		
 		spread.addSheet(0, sheet);
+		var style = new spreadNS.Style();
+	    style.font = "11pt "+uiResource.defaultFontFamily;
+	    sheet.setStyle(-1, -1, style);
 	});
 }
 
@@ -395,6 +408,4 @@ function copyCreateNewRoster(e, $self) {
 		});
 	}, {name: nodeName+"_copy"});
 }
-
-
 

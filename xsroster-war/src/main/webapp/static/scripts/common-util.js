@@ -177,6 +177,7 @@ function initZtreeNodes(cfg) {
 	var enableEdit = (cfg.enableEdit === true || cfg.enableEdit === 'true'); 
 	var showValid = (cfg.showValid === true || cfg.showValid === 'true'); 
 	var showPublished = (cfg.showPublished === true || cfg.showPublished === 'true'); 
+	var callback = cfg.callback || function() {};
 	
     //隐藏菜单
     function hideMenu() {
@@ -262,6 +263,9 @@ function initZtreeNodes(cfg) {
             		openRosterViewById(nodeid);
             	}
         	}
+        } 
+        if (callback) {
+        	callback(zNodes);
         }
     });
     

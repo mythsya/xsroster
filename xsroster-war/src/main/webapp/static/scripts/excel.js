@@ -2310,10 +2310,10 @@ function setStyleFont(sheet, prop, isLabelStyle, optionValue1, optionValue2) {
         rowCount = sheet.getRowCount(),
         columnCount = sheet.getColumnCount(),
         defaultStyle = sheet.getDefaultStyle();
-
+    
     function updateStyleFont(style) {
         if (!style.font) {
-            style.font = defaultStyle.font || "11pt Calibri";
+            style.font = defaultStyle.font || ("11pt "+uiResource.defaultFontFamily);
         }
         styleEle.style.font = style.font;
         var styleFont = $(styleEle).css(prop);
@@ -5927,8 +5927,11 @@ $(document).ready(function () {
     initSpread();
 
     //Change default allowCellOverflow the same with Excel.
+    var style = new spreadNS.Style();
+    style.font = "11pt "+uiResource.defaultFontFamily;
     spread.sheets.forEach(function (sheet) {
-        sheet.options.allowCellOverflow = true;
+        sheet.options.allowCellOverflow = true; 
+        sheet.setStyle(-1, -1, style);
     });
 
     //window resize adjust
